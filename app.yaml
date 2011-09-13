@@ -5,7 +5,7 @@ api_version: 1
 
 handlers:
 
-- url: canvas-test/*
+- url: canvas-test/
   static_dir: canvas-test/
 - url:  /.*
   script: landing.py 
