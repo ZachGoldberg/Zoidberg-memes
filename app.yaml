@@ -2,3 +2,11 @@ application: waterlol-dev
 version: 1
 runtime: python
 api_version: 1
+
+handlers:
+
+- url:  /
+  script: landing.py 
+
+- url: /m*
+  script: landing.py
