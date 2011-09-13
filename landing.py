@@ -15,7 +15,6 @@ from google.appengine.api import memcache
 class LandingPortal(webapp.RequestHandler):
 
     def get(self):
-
         self.response.out.write("Dicks")
 
 
