@@ -1,0 +1,40 @@
+<html>
+
+
+<head>
+
+<script type="text/javascript"> 
+
+window.onload = function(){
+    var c = document.getElementById('test');
+    ctx = c.getContext("2d");
+
+    ctx.fillText("Dicks and dicks and dicks!", 10, 10);
+
+    var d = c.toDataURL("image/png");
+    console.log(d);
+
+
+    var x = document.createElement('img');
+    x.id = 'foo';
+    x.src = d;
+
+    var b = document.getElementById('body');
+   
+    b.appendChild(x);
+
+
+}
+
+ 
+</script>
+
+</head>
+
+<body id="body">
+
+    <canvas id="test" width="500" height="500"> </canvas>
+
+</body>
+
+</html>
