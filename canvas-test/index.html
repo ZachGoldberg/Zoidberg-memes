@@ -1,0 +1,87 @@
+<html>
+
+
+<head>
+
+<style type="text/css">
+@font-face {
+    font-family: 'MemeImpact';
+    src: url('http://csclub.uwaterloo.ca/~qxi/misc/impact.ttf');
+}
+</style>
+
+<script type="text/javascript"> 
+
+var ctx;
+var WIDTH = 590;
+var HEIGHT = 775;
+var WOFF = WIDTH/2;
+var HOFF = 60;
+
+window.onload = function(){
+    var c = document.getElementById('test');
+    ctx = c.getContext("2d");
+    ctx.strokeStyle = "#000";
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.font = "bold 60px MemeImpact";
+
+//    ctx.fillText("asdf dicks and dicks!", 10, 10);
+
+//    var d = c.toDataURL("image/png");
+//    console.log(d);
+
+
+//    var x = document.createElement('img');
+//    x.id = 'foo';
+//    x.src = d;
+
+    var b = document.getElementById('body');
+   
+//    b.appendChild(x);
+
+
+    var top = document.getElementById('top');
+    var bottom = document.getElementById('bottom');
+
+    top.onkeyup = function() {
+        updateMemeText(top.value, bottom.value, ctx);
+    }
+
+    bottom.onkeyup = function() {
+        updateMemeText(top.value, bottom.value, ctx);
+    }
+
+}
+
+
+updateMemeText = function(t,b,ctx) {
+    ctx.clearRect(0,0,WIDTH,HEIGHT);
+    ctx.strokeText(t,WOFF,HOFF);
+    ctx.fillText(t,WOFF,HOFF);
+    ctx.fillText(b,WOFF,HEIGHT-HOFF);
+    ctx.strokeText(b,WOFF,HEIGHT-HOFF);
+}
+
+//writeText = function(text,ctx,x,y){
+//    ctx.fillText(text,x,y);
+//}
+
+ 
+</script>
+
+</head>
+
+<body id="body" style="background: white;">
+    <div width="590" height="775">
+        <img src="http://csclub.uwaterloo.ca/~qxi/misc/Ducreux1.jpg" style="position:absolute;"/>
+        <canvas id="test" width="590" height="775" style="position:relative;"> </canvas>
+    </div>
+    <form>
+        <input type="text" name="top" id="top"/><br />
+        <input type="text" name="bottom" id="bottom"/><br />
+    </form>
+
+</body>
+
+</html>

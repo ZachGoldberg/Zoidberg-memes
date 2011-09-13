@@ -2,3 +2,6 @@ application: waterlol-dev
 version: 1
 runtime: python
 api_version: 1
+
+- url: canvas-test/
+  static_dir: canvas-test/
