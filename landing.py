@@ -18,8 +18,8 @@ from util import generate_uuid
 class LandingPortal(webapp.RequestHandler):
 
     def get(self):
-        dirs = os.listdir(".")
-        self.response.out.write(str(dirs))
+        templates = os.listdir("templates")
+        self.response.out.write(str(templates))
 
 
 class ServeImage(webapp.RequestHandler):
