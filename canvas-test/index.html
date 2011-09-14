@@ -25,6 +25,7 @@ window.onload = function(){
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.font = "60px MemeImpact";
+    ctx.textBaseline = "middle";
     ctx.width = c.width;
     ctx.height = c.height;
 
@@ -71,8 +72,8 @@ updateMemeText = function(t,b,ctx) {
     b = formatText(b, ctx);
     if (b) {
         for (var i = 0; i < b.length; i++) {
-            ctx.fillText(b[i],WOFF,HEIGHT-HOFF-60*i,500);
-            ctx.strokeText(b[i],WOFF,HEIGHT-HOFF-60*i,500);
+            ctx.fillText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i),500);
+            ctx.strokeText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i),500);
         }
     }
 
@@ -118,6 +119,39 @@ formatText = function(text, ctx) {
     }
 }
 
+formatText2 = function(text, ctx) {
+    ctx.width += 20; // add a bit of a margin
+
+    var text_width = ctx.measureText(text).width;
+    var space_width = ctx.measureText(" ").width;
+
+//    console.log(text_width);
+//    console.log("ctx width is " + ctx.width);
+
+    if (text_width >= ctx.width) {
+        // begin splitting lines
+        var ta = text.split(" ");
+
+        var i = 0;
+        var newrow_width = 0;
+
+        while (text_width - newrow_width >= ctx.width) {
+            if (ta[ta.length - i]) {
+                newrow_width += ctx.measureText(ta[ta.length - i]).width;
+            }
+            i++;
+        }
+
+        console.log("moving " + i + " words into second row");
+
+        // we need to move i words onto a second row
+
+        return [ta.slice(0,ta.length-i).join(" "),
+               ta.slice(ta.length-i).join(" ")];
+    } else {
+        return [text];
+    }
+}
  
 </script>
 
