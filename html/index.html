@@ -22,6 +22,7 @@ window.onload = function(){
     var c = document.getElementById('test');
     ctx = c.getContext("2d");
     ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.font = "60px MemeImpact";
@@ -61,32 +62,26 @@ window.onload = function(){
 updateMemeText = function(t,b,ctx) {
     ctx.clearRect(0,0,WIDTH,HEIGHT);
 
-    t = formatText(t, ctx);
+    t = formatText2(t, ctx);
     if (t) {
         for (var i = 0; i < t.length; i++) {
-            ctx.fillText(t[i],WOFF,HOFF+60*i,500);
-            ctx.strokeText(t[i],WOFF,HOFF+60*i,500);
+            ctx.fillText(t[i],WOFF,HOFF+60*i);
+            ctx.strokeText(t[i],WOFF,HOFF+60*i);
         }
     }
 
-    b = formatText(b, ctx);
+    b = formatText2(b, ctx);
     if (b) {
         for (var i = 0; i < b.length; i++) {
-            ctx.fillText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i),500);
-            ctx.strokeText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i),500);
+            ctx.fillText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i));
+            ctx.strokeText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i));
         }
     }
 
-    console.log(ctx.measureText(t));
+//    console.log(ctx.measureText(t));
 //    console.log(formatText(t,ctx));
 }
 
-//writeText = function(text,ctx,x,y){
-//    ctx.fillText(text,x,y);
-//}
-
-
-// formatText : text, ctx -> {array of text}
 
 formatText = function(text, ctx) {
     var margin;
@@ -120,39 +115,62 @@ formatText = function(text, ctx) {
 }
 
 formatText2 = function(text, ctx) {
-    ctx.width += 20; // add a bit of a margin
+//    ctx.width -= 5; // add a bit of a margin
 
     var text_width = ctx.measureText(text).width;
-    var space_width = ctx.measureText(" ").width;
-
-//    console.log(text_width);
-//    console.log("ctx width is " + ctx.width);
 
     if (text_width >= ctx.width) {
+        console.log("text length exceeded");
         // begin splitting lines
-        var ta = text.split(" ");
 
-        var i = 0;
-        var newrow_width = 0;
+        // we want a 2D array of words
+        var out = breakTextArray(text.split(" "), ctx);
 
-        while (text_width - newrow_width >= ctx.width) {
-            if (ta[ta.length - i]) {
-                newrow_width += ctx.measureText(ta[ta.length - i]).width;
-            }
-            i++;
+        // merge rows back into strings
+        for (var i = 0; i < out.length; i++) {
+            out[i] = out[i].join(" ");
         }
 
-        console.log("moving " + i + " words into second row");
-
-        // we need to move i words onto a second row
-
-        return [ta.slice(0,ta.length-i).join(" "),
-               ta.slice(ta.length-i).join(" ")];
+        return out;
     } else {
         return [text];
     }
 }
- 
+
+// break a 2D array of words into more rows until they fit
+breakTextArray = function(ta, ctx) {
+    if (wordArrayLength(ta, ctx) > ctx.width && ta.length > 1) {
+        console.log("breaking a row of length " +  ta.length);
+        // find min number of words required to make first line fit
+        var i;
+        for (i = 0; i < ta.length; i++) {
+            if (wordArrayLength(ta.slice(0,i+1), ctx) > ctx.width) {
+                var cutpt = Math.max(i,1);
+                return [ta.slice(0,cutpt)].concat(breakTextArray(ta.slice(cutpt),ctx));
+            }
+
+        }
+
+    }
+    console.log("wtf man");
+    return [ta];
+}
+
+// find length of 1-D word array given canvas context
+wordArrayLength = function(a, ctx) {
+    var spc_width = ctx.measureText(" ").width;
+    var total_length = 0;
+
+    for (var i = 0; i < a.length; i++) {
+        total_length += ctx.measureText(a[i]).width;
+    }
+
+    total_length += spc_width*(Math.max(a.length-1,0));
+
+    console.log("wordArrayLength finds length of " + total_length);
+    return total_length;
+}
+
 </script>
 
 </head>
