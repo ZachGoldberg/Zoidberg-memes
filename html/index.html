@@ -21,7 +21,7 @@ var HOFF = 60;
 var changeStaging;
 
 window.onload = function(){
-    var c = document.getElementById('test');
+    var c = document.getElementById('editor-canvas');
     ctx = c.getContext("2d");
     ctx.strokeStyle = "#000";
     ctx.lineWidth = 2;
@@ -58,18 +58,29 @@ window.onload = function(){
         updateMemeText(top.value, bottom.value, ctx);
     }
 
-    var stagingTemplate = document.getElementById('staging_template');
+    var stagingTemplate = document.getElementById('staging_template'),
+    canvasElement = document.getElementById('editor-canvas'),
+    editorElement = document.getElementById('editor');
     changeStaging = function(me) {
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
         newTarget = "/serve?t=t&id=" + old,
         width = me.getAttribute('w'),
-        height = me.getAttribute('h');
+        height = me.getAttribute('h'),
+        targets = [canvasElement, editorElement, stagingTemplate],
+        tlen = targets.length;
 
         stagingTemplate.src = newTarget;
-        stagingTemplate.style.width = width;
-        stagingTemplate.style.height = height;
+        for (var t = 0; t < tlen; t++){
+            targets[t].style.width = width;
+            targets[t].style.height = height;
+        }
+
+        //stagingTemplate.style.width = width;
+        //stagingTemplate.style.height = height;
+        //canvasElement.style.width = width;
+        //canvasElement.style.height = height;
     }
 
 }
@@ -197,7 +208,7 @@ wordArrayLength = function(a, ctx) {
      <div id="editor" style="margin: 0; padding: 0; height: 775px; width: 456px; float: left;">
       <div width="456" height="600">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
-          <canvas id="test" width="456" height="600" style="position:relative;"> </canvas>
+          <canvas id="editor-canvas" width="456" height="600" style="position:relative;"> </canvas>
       </div>
       <form>
           <input type="text" name="top" id="top"/><br />
