@@ -25,6 +25,8 @@ window.onload = function(){
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.font = "60px MemeImpact";
+    ctx.width = c.width;
+    ctx.height = c.height;
 
 //    ctx.fillText("asdf dicks and dicks!", 10, 10);
 
@@ -57,15 +59,64 @@ window.onload = function(){
 
 updateMemeText = function(t,b,ctx) {
     ctx.clearRect(0,0,WIDTH,HEIGHT);
-    ctx.strokeText(t,WOFF,HOFF);
-    ctx.fillText(t,WOFF,HOFF);
-    ctx.fillText(b,WOFF,HEIGHT-HOFF);
-    ctx.strokeText(b,WOFF,HEIGHT-HOFF);
+
+    t = formatText(t, ctx);
+    if (t) {
+        for (var i = 0; i < t.length; i++) {
+            ctx.strokeText(t[i],WOFF,HOFF+60*i,500);
+            ctx.fillText(t[i],WOFF,HOFF+60*i,500);
+        }
+    }
+
+    b = formatText(b, ctx);
+    if (b) {
+        for (var i = 0; i < b.length; i++) {
+            ctx.fillText(b[i],WOFF,HEIGHT-HOFF-60*i,500);
+            ctx.strokeText(b[i],WOFF,HEIGHT-HOFF-60*i,500);
+        }
+    }
+
+    console.log(ctx.measureText(t));
+//    console.log(formatText(t,ctx));
 }
 
 //writeText = function(text,ctx,x,y){
 //    ctx.fillText(text,x,y);
 //}
+
+
+// formatText : text, ctx -> {array of text}
+
+formatText = function(text, ctx) {
+    var margin;
+    var text_width = ctx.measureText(text).width;
+
+//    console.log(text_width);
+//    console.log("ctx width is " + ctx.width);
+
+    if (text_width >= ctx.width) {
+        var ta = text.split(" ");
+
+        var i = 0;
+        var newrow_width = 0;
+
+        while (text_width - newrow_width >= ctx.width) {
+            if (ta[ta.length - i]) {
+                newrow_width += ctx.measureText(ta[ta.length - i]).width;
+            }
+            i++;
+        }
+
+        console.log("moving " + i + " words into second row");
+
+        // we need to move i words onto a second row
+
+        return [ta.slice(0,ta.length-i).join(" "),
+               ta.slice(ta.length-i).join(" ")];
+    } else {
+        return [text];
+    }
+}
 
  
 </script>
