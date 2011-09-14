@@ -6,7 +6,7 @@
 <style type="text/css">
 @font-face {
     font-family: 'MemeImpact';
-    src: url('impact.ttf');
+    src: url('static/impact.ttf');
 }
 </style>
 
@@ -157,15 +157,27 @@ formatText2 = function(text, ctx) {
 
 </head>
 
-<body id="body" style="background: white;">
-    <div width="590" height="775">
-        <img src="http://csclub.uwaterloo.ca/~qxi/misc/Ducreux1.jpg" style="position:absolute;"/>
-        <canvas id="test" width="590" height="775" style="position:relative;"> </canvas>
+<body id="body" style="background: white;" style="width: 1500px;">
+
+    <div id="c" style="width: 1500px;"> 
+     <div id="editor" style="margin: 0; padding: 0; height: 775px; width: 456px; float: left;">
+      <div width="456" height="600">
+          <img src="http://csclub.uwaterloo.ca/~qxi/misc/Ducreux1.jpg" style="position:absolute;"/ width="456" height="600">
+          <canvas id="test" width="456" height="600" style="position:relative;"> </canvas>
+      </div>
+      <form>
+          <input type="text" name="top" id="top"/><br />
+          <input type="text" name="bottom" id="bottom"/><br />
+      </form>
+     </div> <!-- editor done --!>
+     
+     <div id="thumbs" style="margin:0; padding: 0; height: 775px;">
+     {% for t in templates %}
+     <img src="/serve?t=t&id={{ t }}&s=t"/>
+     {% endfor %}
+     </div>
+
     </div>
-    <form>
-        <input type="text" name="top" id="top"/><br />
-        <input type="text" name="bottom" id="bottom"/><br />
-    </form>
 
 </body>
 
