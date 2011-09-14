@@ -1,4 +1,4 @@
-<html>
+<Html>
 
 
 <head>
@@ -17,6 +17,8 @@ var WIDTH = 590;
 var HEIGHT = 775;
 var WOFF = WIDTH/2;
 var HOFF = 60;
+
+var changeStaging;
 
 window.onload = function(){
     var c = document.getElementById('test');
@@ -53,6 +55,20 @@ window.onload = function(){
 
     bottom.onkeyup = function() {
         updateMemeText(top.value, bottom.value, ctx);
+    }
+
+    var stagingTemplate = document.getElementById('staging_template');
+    changeStaging = function(me) {
+        // dynamically change the template
+        var start = me.src.indexOf("id=")+3,
+        old = me.src.substr(start,16),
+        newTarget = "/serve?t=t&id=" + old,
+        width = me.getAttribute('w'),
+        height = me.getAttribute('h');
+
+        stagingTemplate.src = newTarget;
+        stagingTemplate.style.width = width;
+        stagingTemplate.style.height = height;
     }
 
 }
@@ -162,7 +178,7 @@ formatText2 = function(text, ctx) {
     <div id="c" style="width: 1500px;"> 
      <div id="editor" style="margin: 0; padding: 0; height: 775px; width: 456px; float: left;">
       <div width="456" height="600">
-          <img src="http://csclub.uwaterloo.ca/~qxi/misc/Ducreux1.jpg" style="position:absolute;"/ width="456" height="600">
+          <img id="staging_template" width="456" height="600" />
           <canvas id="test" width="456" height="600" style="position:relative;"> </canvas>
       </div>
       <form>
@@ -173,7 +189,7 @@ formatText2 = function(text, ctx) {
      
      <div id="thumbs" style="margin:0; padding: 0; height: 775px;">
      {% for t in templates %}
-     <img src="/serve?t=t&id={{ t }}&s=t"/>
+     <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/>
      {% endfor %}
      </div>
 

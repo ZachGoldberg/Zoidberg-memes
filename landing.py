@@ -11,15 +11,14 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from google.appengine.api import memcache
-from google.appengine.api.images import Image, resize
 
-from meem_models import Template, get_all_templates, get_template_by_id, get_all_template_ids
-from util import generate_uuid
+from meem_models import Template, get_all_templates, get_template_by_id,\
+    get_all_template_ids, create_template
 
 class LandingPortal(webapp.RequestHandler):
 
     def get(self):
-        templates = get_all_template_ids()
+        templates = get_all_templates()
         logging.info(templates)
         template_data = {
             'templates': templates
@@ -57,19 +56,20 @@ class AddTemplate(webapp.RequestHandler):
     def post(self):
         t_img = self.request.get('template')
         t_name = self.request.get('name')
+        create_template(t_name, t_img)
 
-        thumb = Image(t_img)
-        t_img = db.Blob(t_img)
+        #thumb = Image(t_img)
+        #t_img = db.Blob(t_img)
 
-        ap = thumb.width/thumb.height
-        thumb.resize(height=125)
-        thumb = thumb.execute_transforms(quality=70)
+        #ap = thumb.width/thumb.height
+        #thumb.resize(height=125)
+        #thumb = thumb.execute_transforms(quality=70)
 
-        t = Template(uid=generate_uuid(16),
-                     name=t_name,
-                     img=t_img,
-                     thumb=db.Blob(thumb))
-        t.put()
+        #t = Template(uid=generate_uuid(16),
+        #             name=t_name,
+        #             img=t_img,
+        #             thumb=db.Blob(thumb))
+        #t.put()
 
 
 def main():
