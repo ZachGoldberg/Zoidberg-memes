@@ -11,6 +11,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from google.appengine.api import memcache
+from google.appengine.api.images import Image, resize
 
 from meem_models import Template
 from util import generate_uuid
@@ -18,8 +19,12 @@ from util import generate_uuid
 class LandingPortal(webapp.RequestHandler):
 
     def get(self):
-        dirs = os.listdir(".")
-        self.response.out.write(str(dirs))
+        templates = os.listdir("templates")
+        template_data = {
+            'meem_templates': templates
+        }
+        path = os.path.join(os.path.dirname(__file__), 'html/index.html')
+        self.response.out.write(template.render(path, template_data))
 
 
 class ServeImage(webapp.RequestHandler):
@@ -41,13 +46,19 @@ class AddTemplate(webapp.RequestHandler):
     def post(self):
         t_img = self.request.get('template')
         t_name = self.request.get('name')
+
+        thumb = Image(t_img)
         t_img = db.Blob(t_img)
-        logging.info(t_img)
-        t = Template(uid=generate_uuid(16),
-                     name=t_name,
-                     img=t_img,
-                     official=True)
-        t.put()
+
+        ap = thumb.width/thumb.height
+        logging.info(ap)
+        #t_img.resize(width=
+
+        #t = Template(uid=generate_uuid(16),
+        #             name=t_name,
+        #             img=t_img,
+        #             official=True)
+        #t.put()
 
 
 def main():
