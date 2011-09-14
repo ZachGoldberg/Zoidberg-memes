@@ -51,7 +51,9 @@ class AddTemplate(webapp.RequestHandler):
         t_img = db.Blob(t_img)
 
         ap = thumb.width/thumb.height
-        logging.info(ap)
+        thumb.resize(height=125)
+        thumb.execute_transforms(quality=70)
+        logging.info(thumb.height)
         #t_img.resize(width=
 
         #t = Template(uid=generate_uuid(16),
