@@ -7,7 +7,9 @@ handlers:
 
 - url: /canvas-test
   static_dir: canvas-test
+
 - url:  /.*
   script: landing.py 
+
 - url: /m*
   script: landing.py
