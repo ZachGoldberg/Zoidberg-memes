@@ -42,13 +42,16 @@ window.onload = function(){
     var c = document.getElementById('editor-canvas');
 //    c.style.width = c.width;
 //    c.style.height = c.height;
+
     ctx = c.getContext("2d");
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = 2;
-    ctx.fillStyle = "#fff";
-    ctx.textAlign = "center";
-    ctx.font = "60px MemeImpact";
-    ctx.textBaseline = "middle";
+//    ctx.strokeStyle = "#000";
+//    ctx.lineWidth = 2;
+//    ctx.fillStyle = "#fff";
+//    ctx.textAlign = "center";
+//    ctx.font = "60px MemeImpact";
+//    ctx.textBaseline = "middle";
+    ctx = initContextForText(ctx);
+
 //    ctx.width = c.width;
 //    ctx.height = c.height;
 
@@ -119,12 +122,7 @@ window.onload = function(){
         //    c.style.width = c.width;
         //    c.style.height = c.height;
             var ctx = c.getContext("2d");
-            ctx.strokeStyle = "#000";
-            ctx.lineWidth = 2;
-            ctx.fillStyle = "#fff";
-            ctx.textAlign = "center";
-            ctx.font = "60px MemeImpact";
-            ctx.textBaseline = "middle";
+            ctx = initContextForText(ctx);
 
             console.log("new canvas height is actually " + ctx.canvas.height);
 
@@ -166,15 +164,49 @@ window.onload = function(){
 }
 
 
-updateMemeText = function(t,b,ctx,bool) {
-    if (bool !== false) {
+// buttsecks the canvas context so we can write text properly
+initContextForText = function (ctx) {
+
+    ctx.setFontSize = function (size) {
+        if (size !== this.fontsize) {
+            this.fontsize = size;
+            this.font = size + "px MemeImpact";
+        }
+    }
+
+    ctx.recomputeFontSize = function () {
+        // scale font size for meme canvas height
+        var fontsize = Math.ceil(0.12*this.canvas.height);
+        this.setFontSize(fontsize);
+    }
+
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+//    ctx.font = "60px MemeImpact";
+//    ctx.fontsize = 60; // remember our font size baby
+    ctx.textBaseline = "middle";
+
+    ctx.recomputeFontSize();
+
+    return ctx;
+}
+
+updateMemeText = function(t,b,ctx,noclear) {
+    if (noclear !== false) {
+        // clear canvas and redraw
         ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     }
 
     console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
 
+// TODO: REMOVE    
+    // scale font size for meme canvas height
+//    var fontsize = Math.ceil(0.12*ctx.canvas.height);
+//    ctx.setFontSize(fontsize);
 
-    t = formatText2(t, ctx);
+    t = formatText(t, ctx);
     if (t) {
         for (var i = 0; i < t.length; i++) {
             ctx.fillText(t[i],ctx.canvas.width/2,HOFF+60*i);
@@ -182,7 +214,7 @@ updateMemeText = function(t,b,ctx,bool) {
         }
     }
 
-    b = formatText2(b, ctx);
+    b = formatText(b, ctx);
     if (b) {
         for (var i = 0; i < b.length; i++) {
             ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
@@ -194,39 +226,7 @@ updateMemeText = function(t,b,ctx,bool) {
     //console.log(formatText(t,ctx));
 }
 
-
-//////formatText = function(text, ctx) {
-//////    var margin;
-//////    var text_width = ctx.measureText(text).width;
-//////
-////////    console.log(text_width);
-////////    console.log("ctx width is " + ctx.width);
-//////
-//////    if (text_width >= ctx.width) {
-//////        var ta = text.split(" ");
-//////
-//////        var i = 0;
-//////        var newrow_width = 0;
-//////
-//////        while (text_width - newrow_width >= ctx.width) {
-//////            if (ta[ta.length - i]) {
-//////                newrow_width += ctx.measureText(ta[ta.length - i]).width;
-//////            }
-//////            i++;
-//////        }
-//////
-//////        console.log("moving " + i + " words into second row");
-//////
-//////        // we need to move i words onto a second row
-//////
-//////        return [ta.slice(0,ta.length-i).join(" "),
-//////               ta.slice(ta.length-i).join(" ")];
-//////    } else {
-//////        return [text];
-//////    }
-//////}
-
-formatText2 = function(text, ctx) {
+formatText = function(text, ctx) {
 //    ctx.width -= 5; // add a bit of a margin
 
     var text_width = ctx.measureText(text).width;
