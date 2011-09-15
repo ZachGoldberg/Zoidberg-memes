@@ -79,23 +79,42 @@ window.onload = function(){
             targets[t].style.height = height;
         }
         canvasElement.width = width;
-        // fuck chrome
- //       var ctxPrime = c.getContext("2d");
- //   ctxPrime.strokeStyle = "#000";
- //   ctxPrime.lineWidth = 2;
- //   ctxPrime.fillStyle = "#fff";
- //   ctxPrime.textAlign = "center";
- //   ctxPrime.font = "60px MemeImpact";
- //   ctxPrime.textBaseline = "middle";
- //       top.onkeyup = function() {
- //           updateMemeText(top.value, bottom.value, ctxPrime);
- //       };
+        
+        var newCanvas = document.createElement('canvas'),
+        editor = document.getElementById('editor');
+        console.log(editor.childNodes);
+        //newCanvas.style = c.style;
+        newCanvas.width = width;
+        newCanvas.height = height;
+        newCanvas.style.position = 'relative';
+        newCanvas.id = 'editor-canvas';
+        editor.childNodes[editor.childNodes.length] = document.getElementById('input');
+        editor.childNodes[5] = newCanvas;
 
- //       bottom.onkeyup = function() {
- //           updateMemeText(top.value, bottom.value, ctxPrime);
- //       };
-        //chrome
-        canvasElement.height = height;
+        var c = document.getElementById('editor-canvas');
+        //    c.style.width = c.width;
+        //    c.style.height = c.height;
+            var ctx = c.getContext("2d");
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 2;
+            ctx.fillStyle = "#fff";
+            ctx.textAlign = "center";
+            ctx.font = "60px MemeImpact";
+            ctx.textBaseline = "middle";
+
+
+        top.onkeyup = function() {
+            updateMemeText(top.value, bottom.value, ctx);
+        }
+
+        bottom.onkeyup = function() {
+            updateMemeText(top.value, bottom.value, ctx);
+        }
+
+        //editor.removeChild(c);
+        //editor.appendChild(newCanvas);
+
+        //canvasElement.height = height;
 
         //stagingTemplate.style.width = width;
         //stagingTemplate.style.height = height;
@@ -229,11 +248,9 @@ wordArrayLength = function(a, ctx) {
 
     <div id="c" style="width: 950px;"> 
      <div id="editor" style="margin: 0; padding: 0; height: 775px; width: 500px; float: left;">
-      <div width="500" height="600">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
-      </div>
-      <form>
+      <form id="input">
           <input type="text" name="top" id="top"/><br />
           <input type="text" name="bottom" id="bottom"/><br />
       </form>
