@@ -38,11 +38,11 @@ class ServeImage(webapp.RequestHandler):
             t = get_template_by_id(img_id)
 
             if scale == 't': #thumbnail requested
-            #self.response.headers['Content-Type'] = 'image/jpeg'
+                self.response.headers['Content-Type'] = 'image/jpeg'
                 self.response.out.write(t.thumb)
             else:
+                self.response.headers['Content-Type'] = 'image/jpeg'
                 self.response.out.write(t.img)
-        #self.response.out.write(
 
 
 class AddTemplate(webapp.RequestHandler):
