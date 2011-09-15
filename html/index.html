@@ -323,7 +323,7 @@ wordArrayLength = function(a, ctx) {
 <body id="body" style="background: white;" style="width: 1950px;">
 
     <div id="header">
-        <div id="header_contents" style="width: 950px; margin: 0 auto 0 auto;">
+        <div id="header_contents" style="width: 1150px; margin: 0 auto 0 auto;">
             <a href="/"><img src="static/waterlol_banner.png" /></a>
         </div>
         <hr />
@@ -333,14 +333,12 @@ wordArrayLength = function(a, ctx) {
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index: 100;"> </canvas>
-      <div id="controls" style="margin-top: 6px">
           <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
               <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
               <div class="textfield"><input class="memetext" type="text" name="top" id="top" size="24" tabindex=1 /></div>
               <div class="textfield"><input class="memetext" type="text" name="bottom" id="bottom" size="24" tabindex=2 /></div>
               <p>Don't see a template you like? <a href="addTemplate">Upload your own!</a><p />
           </form>
-     </div>
      </div> <!-- editor done --!>
      
      <div id="thumbs" style="margin: 5px; padding: 0; height: 775px; float: left; width: 435px;">
