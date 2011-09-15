@@ -11,10 +11,15 @@
 #bake {
     color: #000;
 /*    margin-left: 250px; */
-    margin-bottom: 20px;
+/*    margin-bottom: 10px; */
     background-color: transparent;
     border-color: #EE82EE;
-    border-width: 1px;
+    border-width: 2px;
+    height: 60px;
+    width: 96px;
+    font-family: helvetical, arial, sans-serif;
+    font-weight: bold;
+    font-size: 22px;
 }
 #bake:hover {
     color: #EE82EE;
@@ -22,6 +27,14 @@
 }
 submit:hover {
     color: red;
+}
+input {
+    font-family: helvetica, arial, sans-serif;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    padding-left: 1px;
+    font-size: 18px;
 }
 </style>
 
@@ -38,46 +51,45 @@ var changeStaging, addMeme;
 
 window.onload = function(){
     var c = document.getElementById('editor-canvas');
-//    c.style.width = c.width;
-//    c.style.height = c.height;
 
     ctx = c.getContext("2d");
-//    ctx.strokeStyle = "#000";
-//    ctx.lineWidth = 2;
-//    ctx.fillStyle = "#fff";
-//    ctx.textAlign = "center";
-//    ctx.font = "60px MemeImpact";
-//    ctx.textBaseline = "middle";
     ctx = initContextForText(ctx);
-
-//    ctx.width = c.width;
-//    ctx.height = c.height;
-
-//    ctx.fillText("asdf dicks and dicks!", 10, 10);
-
-//    var d = c.toDataURL("image/png");
-//    console.log(d);
-
-
-//    var x = document.createElement('img');
-//    x.id = 'foo';
-//    x.src = d;
 
     var b = document.getElementById('body');
    
-//    b.appendChild(x);
-
-
     var top = document.getElementById('top');
     var bottom = document.getElementById('bottom');
 
-    top.onkeyup = function() {
-        updateMemeText(top.value, bottom.value, ctx);
+    var fields = [top, bottom];
+    var defaults = ["Top text", "Bottom text"];
+
+    for (var i = 0; i < fields.length; i++) {
+        fields[i].modified = false;
+        fields[i].value = defaults[i];
+        fields[i].default = defaults[i];
+
+        fields[i].onkeyup = function() {
+            this.modified = true;
+
+            updateMemeTextFromFields(top,bottom,ctx);
+        }
+
+        // clear the default value in text field
+        fields[i].onfocus = function() {
+            if (!this.modified) {
+                this.value = "";
+            }
+        }
+
+        // unclear the default value in text field
+        fields[i].onblur = function() {
+            if (this.value === "") {
+                this.value = this.default;
+            }
+        }
+
     }
 
-    bottom.onkeyup = function() {
-        updateMemeText(top.value, bottom.value, ctx);
-    }
 
     var stagingTemplate = document.getElementById('staging_template'),
     canvasElement = document.getElementById('editor-canvas'),
@@ -124,17 +136,19 @@ window.onload = function(){
 
             console.log("new canvas height is actually " + ctx.canvas.height);
 
-
         top.onkeyup = function() {
-            updateMemeText(top.value, bottom.value, ctx);
+            this.modified = true;
+
+            updateMemeTextFromFields(top,bottom,ctx);
         }
 
         bottom.onkeyup = function() {
-            updateMemeText(top.value, bottom.value, ctx);
+            this.modified = true;
+
+            updateMemeTextFromFields(top,bottom,ctx);
         }
 
-        updateMemeText(top.value, bottom.value, ctx);
-
+        updateMemeTextFromFields(top,bottom,ctx);
    }
 
 
@@ -144,7 +158,8 @@ window.onload = function(){
         theCTxt = theC.getContext("2d");
 
         theCTxt.drawImage(template, 0, 0);
-        updateMemeText(f.top.value, f.bottom.value, theCTxt,false);
+        updateMemeTextFromFields(top, bottom, theCTxt, false);
+//        writeMemeText(f.top.value, f.bottom.value, theCTxt,false);
 
         var theMeme = theC.toDataURL("image/png"),
         imgField = document.createElement('input');
@@ -196,8 +211,21 @@ initContextForText = function (ctx) {
     return ctx;
 }
 
-updateMemeText = function(t,b,ctx,noclear) {
-    if (noclear !== false) {
+// takes field objects. Reads them and updates fields.
+updateMemeTextFromFields = function (top, bottom, ctx, redraw) {
+    if (!top.modified && !bottom.modified) {
+        return;
+    } else if (!top.modified) {
+        writeMemeText("", bottom.value, ctx, redraw);
+    } else if (!bottom.modified) {
+        writeMemeText(top.value, "", ctx, redraw);
+    } else {
+        writeMemeText(top.value, bottom.value, ctx, redraw);
+    }
+}
+
+writeMemeText = function(t,b,ctx,redraw) {
+    if (redraw !== false) {
         // clear canvas and redraw
         ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     }
@@ -230,6 +258,9 @@ updateMemeText = function(t,b,ctx,noclear) {
 
 formatText = function(text, ctx) {
 //    ctx.width -= 5; // add a bit of a margin
+    if (!text) {
+        return;
+    }
 
     var text_width = ctx.measureText(text).width;
 
@@ -301,13 +332,13 @@ wordArrayLength = function(a, ctx) {
     <div id="c" style="width: 950px; margin: 0 auto 0 auto;"> 
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
-          <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
+          <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index: 100;"> </canvas>
       <div id="controls" style="margin-top: 6px">
           <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
               <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
-              <div class="textfield"><label for="top">Top: </label><input type="text" name="top" id="top" tabindex=1 /></div>
-              <div class="textfield"><label for="bottom">Bottom: </label><input type="text" name="bottom" id="bottom" tabindex=2 /></div>
-              <p>Don't see any templates you like? <a href="addTemplate">Upload your own!</a><p />
+              <div class="textfield"><input class="memetext" type="text" name="top" id="top" size="24" tabindex=1 /></div>
+              <div class="textfield"><input class="memetext" type="text" name="bottom" id="bottom" size="24" tabindex=2 /></div>
+              <p>Don't see a template you like? <a href="addTemplate">Upload your own!</a><p />
           </form>
      </div>
      </div> <!-- editor done --!>
