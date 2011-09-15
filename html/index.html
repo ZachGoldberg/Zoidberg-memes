@@ -10,7 +10,8 @@
 }
 #bake {
     color: #000;
-    margin-left: 250px;
+/*    margin-left: 250px; */
+    margin-bottom: 20px;
     background-color: transparent;
     border-color: #EE82EE;
     border-width: 1px;
@@ -300,10 +301,10 @@ wordArrayLength = function(a, ctx) {
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
       <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
-          <input type="text" name="top" id="top"/>
-          <input type="submit" name="bake" id="bake" value="bake" />
+          <label for="top">Top: </label><input type="text" name="top" id="top" tabindex=1 />
+          <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
           <br />
-          <input type="text" name="bottom" id="bottom"/>
+          <label for="bottom">Bottom: </label><input type="text" name="bottom" id="bottom" tabindex=2 />
           <br />
 
       </form>
