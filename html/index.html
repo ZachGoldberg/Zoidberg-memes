@@ -320,7 +320,7 @@ wordArrayLength = function(a, ctx) {
 
 </head>
 
-<body id="body" style="background: white;" style="width: 950px;">
+<body id="body" style="background: white;" style="width: 1950px;">
 
     <div id="header">
         <div id="header_contents" style="width: 950px; margin: 0 auto 0 auto;">
@@ -329,7 +329,7 @@ wordArrayLength = function(a, ctx) {
         <hr />
     </div>
 
-    <div id="c" style="width: 950px; margin: 0 auto 0 auto;"> 
+    <div id="c" style="margin: 0 auto 0 auto; height: 775px; width:1150px;"> 
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index: 100;"> </canvas>
@@ -343,7 +343,7 @@ wordArrayLength = function(a, ctx) {
      </div>
      </div> <!-- editor done --!>
      
-     <div id="thumbs" style="margin: 5px; padding: 0; height: 775px;">
+     <div id="thumbs" style="margin: 5px; padding: 0; height: 775px; float: left; width: 435px;">
      {% for t in templates %}
         <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}">
      {% endfor %}
