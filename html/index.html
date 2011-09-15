@@ -111,26 +111,25 @@ updateMemeText = function(t,b,ctx) {
 
 //    console.log("height: " + ctx.canvas.style.height + " width: " + ctx.canvas.style.width);
 
-    ctx.strokeText("foobar", 300, 60);
 
-//    t = formatText2(t, ctx);
-//    if (t) {
-//        for (var i = 0; i < t.length; i++) {
-//            ctx.fillText(t[i],ctx.c.style.width/2,HOFF+60*i);
-//            ctx.strokeText(t[i],ctx.c.style.width/2,HOFF+60*i);
-//        }
-//    }
-//
-//    b = formatText2(b, ctx);
-//    if (b) {
-//        for (var i = 0; i < b.length; i++) {
-//            ctx.fillText(b[i],ctx.c.style.width/2,ctx.c.style.height-HOFF-60*(b.length-1-i));
-//            ctx.strokeText(b[i],ctx.c.style.width/2,ctx.c.style.height-HOFF-60*(b.length-1-i));
-//        }
-//    }
+    t = formatText2(t, ctx);
+    if (t) {
+        for (var i = 0; i < t.length; i++) {
+            ctx.fillText(t[i],ctx.canvas.width/2,HOFF+60*i);
+            ctx.strokeText(t[i],ctx.canvas.width/2,HOFF+60*i);
+        }
+    }
 
-//    console.log(ctx.measureText(t));
-//    console.log(formatText(t,ctx));
+    b = formatText2(b, ctx);
+    if (b) {
+        for (var i = 0; i < b.length; i++) {
+            ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
+            ctx.strokeText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
+        }
+    }
+
+    console.log(ctx.measureText(t));
+    console.log(formatText(t,ctx));
 }
 
 
@@ -170,7 +169,7 @@ formatText2 = function(text, ctx) {
 
     var text_width = ctx.measureText(text).width;
 
-    if (text_width >= ctx.c.style.width) {
+    if (text_width >= ctx.canvas.width) {
         console.log("text length exceeded");
         // begin splitting lines
 
@@ -190,12 +189,12 @@ formatText2 = function(text, ctx) {
 
 // break a 2D array of words into more rows until they fit
 breakTextArray = function(ta, ctx) {
-    if (wordArrayLength(ta, ctx) > ctx.c.style.width && ta.length > 1) {
+    if (wordArrayLength(ta, ctx) > ctx.canvas.width && ta.length > 1) {
         console.log("breaking a row of length " +  ta.length);
         // find min number of words required to make first line fit
         var i;
         for (i = 0; i < ta.length; i++) {
-            if (wordArrayLength(ta.slice(0,i+1), ctx) > ctx.c.style.width) {
+            if (wordArrayLength(ta.slice(0,i+1), ctx) > ctx.canvas.width) {
                 var cutpt = Math.max(i,1);
                 return [ta.slice(0,cutpt)].concat(breakTextArray(ta.slice(cutpt),ctx));
             }
