@@ -171,13 +171,18 @@ initContextForText = function (ctx) {
         if (size !== this.fontsize) {
             this.fontsize = size;
             this.font = size + "px MemeImpact";
+
+            console.log("changed font size to " + this.fontsize);
+            console.log("changed font style string to " + this.font);
         }
     }
 
     ctx.recomputeFontSize = function () {
         // scale font size for meme canvas height
-        var fontsize = Math.ceil(0.12*this.canvas.height);
+        var fontsize = Math.min(Math.ceil(0.12*this.canvas.height), 60);
         this.setFontSize(fontsize);
+
+        console.log("recomputing text size based on canvas height of " + this.canvas.height);
     }
 
     ctx.strokeStyle = "#000";
@@ -201,24 +206,23 @@ updateMemeText = function(t,b,ctx,noclear) {
 
     console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
 
-// TODO: REMOVE    
-    // scale font size for meme canvas height
-//    var fontsize = Math.ceil(0.12*ctx.canvas.height);
-//    ctx.setFontSize(fontsize);
+    // make nice offsets for line spacing and vertical margin
+    var v_off = ctx.fontsize;
+//    var woff = ; 
 
     t = formatText(t, ctx);
     if (t) {
         for (var i = 0; i < t.length; i++) {
-            ctx.fillText(t[i],ctx.canvas.width/2,HOFF+60*i);
-            ctx.strokeText(t[i],ctx.canvas.width/2,HOFF+60*i);
+            ctx.fillText(t[i],ctx.canvas.width/2,v_off+v_off*i);
+            ctx.strokeText(t[i],ctx.canvas.width/2,v_off+v_off*i);
         }
     }
 
     b = formatText(b, ctx);
     if (b) {
         for (var i = 0; i < b.length; i++) {
-            ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
-            ctx.strokeText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
+            ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-v_off-v_off*(b.length-1-i));
+            ctx.strokeText(b[i],ctx.canvas.width/2,ctx.canvas.height-v_off-v_off*(b.length-1-i));
         }
     }
 
