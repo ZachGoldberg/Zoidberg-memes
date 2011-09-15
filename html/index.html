@@ -80,20 +80,20 @@ window.onload = function(){
         }
         canvasElement.width = width;
         // fuck chrome
-        var ctxPrime = c.getContext("2d");
-    ctxPrime.strokeStyle = "#000";
-    ctxPrime.lineWidth = 2;
-    ctxPrime.fillStyle = "#fff";
-    ctxPrime.textAlign = "center";
-    ctxPrime.font = "60px MemeImpact";
-    ctxPrime.textBaseline = "middle";
-        top.onkeyup = function() {
-            updateMemeText(top.value, bottom.value, ctxPrime);
-        };
+ //       var ctxPrime = c.getContext("2d");
+ //   ctxPrime.strokeStyle = "#000";
+ //   ctxPrime.lineWidth = 2;
+ //   ctxPrime.fillStyle = "#fff";
+ //   ctxPrime.textAlign = "center";
+ //   ctxPrime.font = "60px MemeImpact";
+ //   ctxPrime.textBaseline = "middle";
+ //       top.onkeyup = function() {
+ //           updateMemeText(top.value, bottom.value, ctxPrime);
+ //       };
 
-        bottom.onkeyup = function() {
-            updateMemeText(top.value, bottom.value, ctxPrime);
-        };
+ //       bottom.onkeyup = function() {
+ //           updateMemeText(top.value, bottom.value, ctxPrime);
+ //       };
         //chrome
         canvasElement.height = height;
 
@@ -129,7 +129,7 @@ updateMemeText = function(t,b,ctx) {
     }
 
     console.log(ctx.measureText(t));
-    console.log(formatText(t,ctx));
+    //console.log(formatText(t,ctx));
 }
 
 
