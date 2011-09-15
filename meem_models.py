@@ -24,14 +24,17 @@ class Meme(db.Model):
 # create_mem(str, str, str) [ the third string is the raw meme in base64 encoding]
 def create_meme(top, bottom, meme):
     """Create a meme object in the datastore"""
+    logging.info(meme)
     m = Image(meme)
     thumb = Image(meme)
     
     if m.width > 500:
+        logging.info("Here")
         m.resize(width=500)
         m = m.execute_transforms()
         meme = db.Blob(m)
     else:
+        logging.info("There")
         meme = db.Blob(meme)
 
     thumb.resize(height=125)

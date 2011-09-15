@@ -35,7 +35,6 @@ class LandingPortal(webapp.RequestHandler):
         theMeme64 = self.dataURLPattern.match(theMeme).group(2)
         create_meme(top,bottom,base64.b64decode(theMeme64))
         self.redirect('/')
-        
 
 
 class ServeImage(webapp.RequestHandler):
