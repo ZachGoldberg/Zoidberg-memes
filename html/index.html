@@ -83,7 +83,7 @@ window.onload = function(){
 
         // unclear the default value in text field
         fields[i].onblur = function() {
-            if (this.value === "") {
+            if (this.value === "" && !this.modified) {
                 this.value = this.default;
             }
         }
