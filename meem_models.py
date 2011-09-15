@@ -10,6 +10,48 @@ from google.appengine.api.images import Image, resize
 
 from util import generate_uuid
 
+class Meme(db.Model):
+    """Finalized meem"""
+    uid = db.StringProperty()
+    top = db.StringProperty()
+    bottom = db.StringProperty()
+    meme = db.BlobProperty(default=None)
+    thumb = db.BlobProperty(default=None)
+    meme_width = db.IntegerProperty
+    meme_height = db.IntegerProperty
+
+
+# create_mem(str, str, str) [ the third string is the raw meme in base64 encoding]
+def create_meme(top, bottom, meme):
+    """Create a meme object in the datastore"""
+    m = Image(meme)
+    thumb = Image(meme)
+    
+    if m.width > 500:
+        m.resize(width=500)
+        m = m.execute_transforms()
+        meme = db.Blob(m)
+    else:
+        meme = db.Blob(meme)
+
+    thumb.resize(height=125)
+    thumb = thumb.execute_transforms(quality=70)
+    thumb = db.Blob(thumb)
+
+    meme = Meme(uid=generate_uuid(16),
+                top=top,
+                bottom=bottom,
+                meme=meme,
+                meme_width=m.width,
+                meme_height=m.height,
+                thumb=thumb)
+    meme.put()
+
+
+def get_meme_by_id(uid):
+    return Meme.all().filter('uid =', uid).get()
+
+
 class Template(db.Model):
     """Model for storing meem templates"""
     uid = db.StringProperty()
@@ -18,6 +60,7 @@ class Template(db.Model):
     thumb = db.BlobProperty(default=None)
     real_width = db.IntegerProperty()
     real_height = db.IntegerProperty()
+
 
 # create_template(str, str) [ the second string is the raw image ]
 def create_template(name, img):
@@ -30,7 +73,6 @@ def create_template(name, img):
     width, height = template_data.width, template_data.height
 
     if width > 500:
-        logging.info("We should be here")
         template_data.resize(width=500)
         template_data = template_data.execute_transforms(quality=85)
         t_data = Image(template_data)

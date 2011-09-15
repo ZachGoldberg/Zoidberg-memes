@@ -4,7 +4,7 @@
 # Amir Sayed Khader, Qifan Xi
 # askhader@uwaterloo.ca, qxi@uwaterloo.ca
 
-import os, logging
+import os, logging, base64, re
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
@@ -13,7 +13,7 @@ from google.appengine.ext import db
 from google.appengine.api import memcache
 
 from meem_models import Template, get_all_templates, get_template_by_id,\
-    get_all_template_ids, create_template
+    get_all_template_ids, create_template, create_meme, get_meme_by_id
 
 class LandingPortal(webapp.RequestHandler):
 
@@ -25,6 +25,17 @@ class LandingPortal(webapp.RequestHandler):
         }
         path = os.path.join(os.path.dirname(__file__), 'html/index.html')
         self.response.out.write(template.render(path, template_data))
+
+    dataURLPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+    def post(self):
+        """Meme Upload Handler"""
+        theMeme = self.request.get('meme')
+        top = self.request.get('top')
+        bottom = self.request.get('bottom')
+        theMeme64 = self.dataURLPattern.match(theMeme).group(2)
+        create_meme(top,bottom,base64.b64decode(theMeme64))
+        self.redirect('/')
+        
 
 
 class ServeImage(webapp.RequestHandler):
@@ -43,6 +54,11 @@ class ServeImage(webapp.RequestHandler):
             else:
                 self.response.headers['Content-Type'] = 'image/jpeg'
                 self.response.out.write(t.img)
+        elif image_type == 'm': # meme requested
+            m = get_meme_by_id(img_id)
+            if scale !='t': #thumb
+                self.response.headers['Content-Type'] = 'image/jpeg'
+                self.response.out.write(m.meme)
 
 
 class AddTemplate(webapp.RequestHandler):
@@ -64,6 +80,7 @@ class AddTemplate(webapp.RequestHandler):
 def main():
     application = webapp.WSGIApplication([
         (r'/', LandingPortal),
+        (r'/addMeme', LandingPortal),
         (r'/serve', ServeImage),
         (r'/addTemplate', AddTemplate),
         (r'/procTemplate', AddTemplate)],

@@ -8,6 +8,22 @@
     font-family: 'MemeImpact';
     src: url('static/impact.ttf');
 }
+#bake {
+    color: #000;
+    margin-left: 250px;
+    background-color: transparent;
+    border-color: #EE82EE;
+    border-width: 1px;
+}
+#bake:hover {
+    color: #EE82EE;
+    border-color: #EE82EE;
+}
+<!-- <input type="submit" name="bake" id="bake" value="bake" style="margin-left: 250px; color: #EE82EE; background-color: black; border-color: black;" />
+--!>
+submit:hover {
+    color: red;
+}
 </style>
 
 <script type="text/javascript"> 
@@ -18,7 +34,8 @@ var ctx;
 //var WOFF = WIDTH/2;
 var HOFF = 60;
 
-var changeStaging;
+var changeStaging, addMeme;
+
 
 window.onload = function(){
     var c = document.getElementById('editor-canvas');
@@ -63,7 +80,9 @@ window.onload = function(){
     var stagingTemplate = document.getElementById('staging_template'),
     canvasElement = document.getElementById('editor-canvas'),
     editorElement = document.getElementById('editor');
-    changeStaging = function(me) {
+
+
+        changeStaging = function(me) {
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
@@ -119,22 +138,37 @@ window.onload = function(){
 
         updateMemeText(top.value, bottom.value, ctx);
 
-        //editor.removeChild(c);
-        //editor.appendChild(newCanvas);
+   }
 
-        //canvasElement.height = height;
 
-        //stagingTemplate.style.width = width;
-        //stagingTemplate.style.height = height;
-        //canvasElement.style.width = width;
-        //canvasElement.style.height = height;
-    }
+    addMeme = function(f){
+        var theC = document.getElementById('editor-canvas'),
+        template = document.getElementById('staging_template'),
+        theCTxt = theC.getContext("2d");
+
+        theCTxt.drawImage(template, 0, 0);
+        updateMemeText(f.top.value, f.bottom.value, theCTxt,false);
+
+        var theMeme = theC.toDataURL("image/png"),
+        imgField = document.createElement('input');
+
+        imgField.type = 'hidden';
+        imgField.value = theMeme;
+        imgField.name = 'meme';
+        imgField.id = 'meme';
+
+        f.appendChild(imgField);
+        return true;
+    };
+
 
 }
 
 
-updateMemeText = function(t,b,ctx) {
-    ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+updateMemeText = function(t,b,ctx,bool) {
+    if (bool !== false) {
+        ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    }
 
     console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
 
@@ -260,15 +294,19 @@ wordArrayLength = function(a, ctx) {
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
-      <form id="input">
-          <input type="text" name="top" id="top"/><br />
-          <input type="text" name="bottom" id="bottom"/><br />
+      <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
+          <input type="text" name="top" id="top"/>
+          <input type="submit" name="bake" id="bake" value="bake" />
+          <br />
+          <input type="text" name="bottom" id="bottom"/>
+          <br />
+
       </form>
      </div> <!-- editor done --!>
      
      <div id="thumbs" style="margin: 5px; padding: 0; height: 775px;">
      {% for t in templates %}
-        <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/>
+        <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}">
      {% endfor %}
      </div>
 
