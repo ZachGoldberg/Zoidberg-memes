@@ -26,12 +26,19 @@ def create_meme(top, bottom, meme):
     """Create a meme object in the datastore"""
     m = Image(meme)
     thumb = Image(meme)
+    width, height = m.width, m.height
     
     if m.width > 500:
+        logging.info("Here")
         m.resize(width=500)
         m = m.execute_transforms()
+        
+        moar_img_data = Image(m)
+        width, height = moar_img_data.width, moar_img_data.height
+
         meme = db.Blob(m)
     else:
+        logging.info("There")
         meme = db.Blob(meme)
 
     thumb.resize(height=125)
@@ -42,8 +49,8 @@ def create_meme(top, bottom, meme):
                 top=top,
                 bottom=bottom,
                 meme=meme,
-                meme_width=m.width,
-                meme_height=m.height,
+                meme_width=width,
+                meme_height=height,
                 thumb=thumb)
     meme.put()
 
