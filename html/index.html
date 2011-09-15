@@ -82,14 +82,18 @@ window.onload = function(){
         
         var newCanvas = document.createElement('canvas'),
         editor = document.getElementById('editor');
-        console.log(editor.childNodes);
         //newCanvas.style = c.style;
         newCanvas.width = width;
         newCanvas.height = height;
         newCanvas.style.position = 'relative';
+        var c = document.getElementById('editor-canvas');
+        editor.removeChild(c);
         newCanvas.id = 'editor-canvas';
         editor.childNodes[editor.childNodes.length] = document.getElementById('input');
-        editor.childNodes[5] = newCanvas;
+        editor.appendChild(newCanvas);
+        editor.appendChild(document.getElementById('input'));
+        editor.childNodes[5] = undefined;
+        console.log("editor-canvas should be not null and is " + document.getElementById('editor-canvas'));
 
         var c = document.getElementById('editor-canvas');
         //    c.style.width = c.width;
@@ -102,6 +106,8 @@ window.onload = function(){
             ctx.font = "60px MemeImpact";
             ctx.textBaseline = "middle";
 
+            console.log("new canvas height is actually " + ctx.canvas.height);
+
 
         top.onkeyup = function() {
             updateMemeText(top.value, bottom.value, ctx);
@@ -110,6 +116,8 @@ window.onload = function(){
         bottom.onkeyup = function() {
             updateMemeText(top.value, bottom.value, ctx);
         }
+
+        updateMemeText(top.value, bottom.value, ctx);
 
         //editor.removeChild(c);
         //editor.appendChild(newCanvas);
@@ -128,7 +136,7 @@ window.onload = function(){
 updateMemeText = function(t,b,ctx) {
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
 
-//    console.log("height: " + ctx.canvas.style.height + " width: " + ctx.canvas.style.width);
+    console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
 
 
     t = formatText2(t, ctx);
@@ -247,7 +255,7 @@ wordArrayLength = function(a, ctx) {
 <body id="body" style="background: white;" style="width: 950px;">
 
     <div id="c" style="width: 950px;"> 
-     <div id="editor" style="margin: 5px; padding: 0; height: 775px; width: 500px; float: left;">
+     <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
       <form id="input">
