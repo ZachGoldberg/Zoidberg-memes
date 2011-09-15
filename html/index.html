@@ -20,8 +20,6 @@
     color: #EE82EE;
     border-color: #EE82EE;
 }
-<!-- <input type="submit" name="bake" id="bake" value="bake" style="margin-left: 250px; color: #EE82EE; background-color: black; border-color: black;" />
---!>
 submit:hover {
     color: red;
 }
@@ -42,13 +40,16 @@ window.onload = function(){
     var c = document.getElementById('editor-canvas');
 //    c.style.width = c.width;
 //    c.style.height = c.height;
+
     ctx = c.getContext("2d");
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = 2;
-    ctx.fillStyle = "#fff";
-    ctx.textAlign = "center";
-    ctx.font = "60px MemeImpact";
-    ctx.textBaseline = "middle";
+//    ctx.strokeStyle = "#000";
+//    ctx.lineWidth = 2;
+//    ctx.fillStyle = "#fff";
+//    ctx.textAlign = "center";
+//    ctx.font = "60px MemeImpact";
+//    ctx.textBaseline = "middle";
+    ctx = initContextForText(ctx);
+
 //    ctx.width = c.width;
 //    ctx.height = c.height;
 
@@ -119,12 +120,7 @@ window.onload = function(){
         //    c.style.width = c.width;
         //    c.style.height = c.height;
             var ctx = c.getContext("2d");
-            ctx.strokeStyle = "#000";
-            ctx.lineWidth = 2;
-            ctx.fillStyle = "#fff";
-            ctx.textAlign = "center";
-            ctx.font = "60px MemeImpact";
-            ctx.textBaseline = "middle";
+            ctx = initContextForText(ctx);
 
             console.log("new canvas height is actually " + ctx.canvas.height);
 
@@ -166,27 +162,65 @@ window.onload = function(){
 }
 
 
-updateMemeText = function(t,b,ctx,bool) {
-    if (bool !== false) {
+// buttsecks the canvas context so we can write text properly
+initContextForText = function (ctx) {
+
+    ctx.setFontSize = function (size) {
+        if (size !== this.fontsize) {
+            this.fontsize = size;
+            this.font = size + "px MemeImpact";
+
+            console.log("changed font size to " + this.fontsize);
+            console.log("changed font style string to " + this.font);
+        }
+    }
+
+    ctx.recomputeFontSize = function () {
+        // scale font size for meme canvas height
+        var fontsize = Math.min(Math.ceil(0.12*this.canvas.height), 54);
+        this.setFontSize(fontsize);
+
+        console.log("recomputing text size based on canvas height of " + this.canvas.height);
+    }
+
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+//    ctx.font = "60px MemeImpact";
+//    ctx.fontsize = 60; // remember our font size baby
+    ctx.textBaseline = "middle";
+
+    ctx.recomputeFontSize();
+
+    return ctx;
+}
+
+updateMemeText = function(t,b,ctx,noclear) {
+    if (noclear !== false) {
+        // clear canvas and redraw
         ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     }
 
     console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
 
+    // make nice offsets for line spacing and vertical margin
+    var v_off = ctx.fontsize;
+//    var woff = ; 
 
-    t = formatText2(t, ctx);
+    t = formatText(t, ctx);
     if (t) {
         for (var i = 0; i < t.length; i++) {
-            ctx.fillText(t[i],ctx.canvas.width/2,HOFF+60*i);
-            ctx.strokeText(t[i],ctx.canvas.width/2,HOFF+60*i);
+            ctx.fillText(t[i],ctx.canvas.width/2,v_off+v_off*i);
+            ctx.strokeText(t[i],ctx.canvas.width/2,v_off+v_off*i);
         }
     }
 
-    b = formatText2(b, ctx);
+    b = formatText(b, ctx);
     if (b) {
         for (var i = 0; i < b.length; i++) {
-            ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
-            ctx.strokeText(b[i],ctx.canvas.width/2,ctx.canvas.height-HOFF-60*(b.length-1-i));
+            ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-v_off-v_off*(b.length-1-i));
+            ctx.strokeText(b[i],ctx.canvas.width/2,ctx.canvas.height-v_off-v_off*(b.length-1-i));
         }
     }
 
@@ -194,39 +228,7 @@ updateMemeText = function(t,b,ctx,bool) {
     //console.log(formatText(t,ctx));
 }
 
-
-//////formatText = function(text, ctx) {
-//////    var margin;
-//////    var text_width = ctx.measureText(text).width;
-//////
-////////    console.log(text_width);
-////////    console.log("ctx width is " + ctx.width);
-//////
-//////    if (text_width >= ctx.width) {
-//////        var ta = text.split(" ");
-//////
-//////        var i = 0;
-//////        var newrow_width = 0;
-//////
-//////        while (text_width - newrow_width >= ctx.width) {
-//////            if (ta[ta.length - i]) {
-//////                newrow_width += ctx.measureText(ta[ta.length - i]).width;
-//////            }
-//////            i++;
-//////        }
-//////
-//////        console.log("moving " + i + " words into second row");
-//////
-//////        // we need to move i words onto a second row
-//////
-//////        return [ta.slice(0,ta.length-i).join(" "),
-//////               ta.slice(ta.length-i).join(" ")];
-//////    } else {
-//////        return [text];
-//////    }
-//////}
-
-formatText2 = function(text, ctx) {
+formatText = function(text, ctx) {
 //    ctx.width -= 5; // add a bit of a margin
 
     var text_width = ctx.measureText(text).width;
@@ -300,14 +302,14 @@ wordArrayLength = function(a, ctx) {
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
-      <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
-          <label for="top">Top: </label><input type="text" name="top" id="top" tabindex=1 />
-          <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
-          <br />
-          <label for="bottom">Bottom: </label><input type="text" name="bottom" id="bottom" tabindex=2 />
-          <br />
-
-      </form>
+      <div id="controls" style="margin-top: 6px">
+          <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
+              <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
+              <div class="textfield"><label for="top">Top: </label><input type="text" name="top" id="top" tabindex=1 /></div>
+              <div class="textfield"><label for="bottom">Bottom: </label><input type="text" name="bottom" id="bottom" tabindex=2 /></div>
+              <p>Don't see any templates you like? <a href="addTemplate">Upload your own!</a><p />
+          </form>
+     </div>
      </div> <!-- editor done --!>
      
      <div id="thumbs" style="margin: 5px; padding: 0; height: 775px;">
