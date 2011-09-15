@@ -48,7 +48,9 @@ class ServeImage(webapp.RequestHandler):
 class AddTemplate(webapp.RequestHandler):
 
     def get(self):
+        status = self.request.get('s')
         template_values = {}
+        template_values['status'] = '<h1 style="color: green;">Success</h1>' if status == 's' else ''
         path = os.path.join(os.path.dirname(__file__), 'html/addTemplate.html')
         self.response.out.write(template.render(path, template_values))
         
@@ -57,20 +59,7 @@ class AddTemplate(webapp.RequestHandler):
         t_img = self.request.get('template')
         t_name = self.request.get('name')
         create_template(t_name, t_img)
-
-        #thumb = Image(t_img)
-        #t_img = db.Blob(t_img)
-
-        #ap = thumb.width/thumb.height
-        #thumb.resize(height=125)
-        #thumb = thumb.execute_transforms(quality=70)
-
-        #t = Template(uid=generate_uuid(16),
-        #             name=t_name,
-        #             img=t_img,
-        #             thumb=db.Blob(thumb))
-        #t.put()
-
+        self.redirect('/addTemplate?s=s')
 
 def main():
     application = webapp.WSGIApplication([
