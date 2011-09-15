@@ -25,9 +25,17 @@ def create_template(name, img):
        thumbnail and accompanied dimension metadata"""
     
     thumb = Image(img)
-    t_img = db.Blob(img)
     template_data = Image(img)
+    t_img = db.Blob(img)
     width, height = template_data.width, template_data.height
+
+    if width > 500:
+        logging.info("We should be here")
+        template_data.resize(width=500)
+        template_data = template_data.execute_transforms(quality=85)
+        t_data = Image(template_data)
+        width, height = t_data.width, t_data.height
+        t_img = db.Blob(template_data)
 
     thumb.resize(height=125)
     thumb = thumb.execute_transforms(quality=70)

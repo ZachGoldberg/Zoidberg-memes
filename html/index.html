@@ -254,6 +254,8 @@ wordArrayLength = function(a, ctx) {
 
 <body id="body" style="background: white;" style="width: 950px;">
 
+    <img src="static/waterlol_banner.png" />
+
     <div id="c" style="width: 950px;"> 
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
@@ -264,7 +266,7 @@ wordArrayLength = function(a, ctx) {
       </form>
      </div> <!-- editor done --!>
      
-     <div id="thumbs" style="margin:0; padding: 0; height: 775px;">
+     <div id="thumbs" style="margin: 5px; padding: 0; height: 775px;">
      {% for t in templates %}
         <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/>
      {% endfor %}
