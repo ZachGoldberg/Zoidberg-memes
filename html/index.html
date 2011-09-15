@@ -20,8 +20,6 @@
     color: #EE82EE;
     border-color: #EE82EE;
 }
-<!-- <input type="submit" name="bake" id="bake" value="bake" style="margin-left: 250px; color: #EE82EE; background-color: black; border-color: black;" />
---!>
 submit:hover {
     color: red;
 }
@@ -179,7 +177,7 @@ initContextForText = function (ctx) {
 
     ctx.recomputeFontSize = function () {
         // scale font size for meme canvas height
-        var fontsize = Math.min(Math.ceil(0.12*this.canvas.height), 60);
+        var fontsize = Math.min(Math.ceil(0.12*this.canvas.height), 54);
         this.setFontSize(fontsize);
 
         console.log("recomputing text size based on canvas height of " + this.canvas.height);
@@ -304,14 +302,14 @@ wordArrayLength = function(a, ctx) {
      <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
-      <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
-          <label for="top">Top: </label><input type="text" name="top" id="top" tabindex=1 />
-          <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
-          <br />
-          <label for="bottom">Bottom: </label><input type="text" name="bottom" id="bottom" tabindex=2 />
-          <br />
-
-      </form>
+      <div id="controls" style="margin-top: 6px">
+          <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
+              <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
+              <div class="textfield"><label for="top">Top: </label><input type="text" name="top" id="top" tabindex=1 /></div>
+              <div class="textfield"><label for="bottom">Bottom: </label><input type="text" name="bottom" id="bottom" tabindex=2 /></div>
+              <p>Don't see any templates you like? <a href="addTemplate">Upload your own!</a><p />
+          </form>
+     </div>
      </div> <!-- editor done --!>
      
      <div id="thumbs" style="margin: 5px; padding: 0; height: 775px;">
