@@ -13,15 +13,17 @@
 <script type="text/javascript"> 
 
 var ctx;
-var WIDTH = 590;
-var HEIGHT = 775;
-var WOFF = WIDTH/2;
+//var WIDTH = 590;
+//var HEIGHT = 775;
+//var WOFF = WIDTH/2;
 var HOFF = 60;
 
 var changeStaging;
 
 window.onload = function(){
     var c = document.getElementById('editor-canvas');
+//    c.style.width = c.width;
+//    c.style.height = c.height;
     ctx = c.getContext("2d");
     ctx.strokeStyle = "#000";
     ctx.lineWidth = 2;
@@ -29,8 +31,8 @@ window.onload = function(){
     ctx.textAlign = "center";
     ctx.font = "60px MemeImpact";
     ctx.textBaseline = "middle";
-    ctx.width = c.width;
-    ctx.height = c.height;
+//    ctx.width = c.width;
+//    ctx.height = c.height;
 
 //    ctx.fillText("asdf dicks and dicks!", 10, 10);
 
@@ -68,7 +70,7 @@ window.onload = function(){
         newTarget = "/serve?t=t&id=" + old,
         width = me.getAttribute('w'),
         height = me.getAttribute('h'),
-        targets = [canvasElement, editorElement, stagingTemplate],
+        targets = [editorElement, stagingTemplate],
         tlen = targets.length;
 
         stagingTemplate.src = newTarget;
@@ -76,6 +78,8 @@ window.onload = function(){
             targets[t].style.width = width;
             targets[t].style.height = height;
         }
+        canvasElement.width = width;
+        canvasElement.height = height;
 
         //stagingTemplate.style.width = width;
         //stagingTemplate.style.height = height;
@@ -87,66 +91,70 @@ window.onload = function(){
 
 
 updateMemeText = function(t,b,ctx) {
-    ctx.clearRect(0,0,WIDTH,HEIGHT);
+    ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
 
-    t = formatText2(t, ctx);
-    if (t) {
-        for (var i = 0; i < t.length; i++) {
-            ctx.fillText(t[i],WOFF,HOFF+60*i);
-            ctx.strokeText(t[i],WOFF,HOFF+60*i);
-        }
-    }
+//    console.log("height: " + ctx.canvas.style.height + " width: " + ctx.canvas.style.width);
 
-    b = formatText2(b, ctx);
-    if (b) {
-        for (var i = 0; i < b.length; i++) {
-            ctx.fillText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i));
-            ctx.strokeText(b[i],WOFF,HEIGHT-HOFF-60*(b.length-1-i));
-        }
-    }
+    ctx.strokeText("foobar", 300, 60);
+
+//    t = formatText2(t, ctx);
+//    if (t) {
+//        for (var i = 0; i < t.length; i++) {
+//            ctx.fillText(t[i],ctx.c.style.width/2,HOFF+60*i);
+//            ctx.strokeText(t[i],ctx.c.style.width/2,HOFF+60*i);
+//        }
+//    }
+//
+//    b = formatText2(b, ctx);
+//    if (b) {
+//        for (var i = 0; i < b.length; i++) {
+//            ctx.fillText(b[i],ctx.c.style.width/2,ctx.c.style.height-HOFF-60*(b.length-1-i));
+//            ctx.strokeText(b[i],ctx.c.style.width/2,ctx.c.style.height-HOFF-60*(b.length-1-i));
+//        }
+//    }
 
 //    console.log(ctx.measureText(t));
 //    console.log(formatText(t,ctx));
 }
 
 
-formatText = function(text, ctx) {
-    var margin;
-    var text_width = ctx.measureText(text).width;
-
-//    console.log(text_width);
-//    console.log("ctx width is " + ctx.width);
-
-    if (text_width >= ctx.width) {
-        var ta = text.split(" ");
-
-        var i = 0;
-        var newrow_width = 0;
-
-        while (text_width - newrow_width >= ctx.width) {
-            if (ta[ta.length - i]) {
-                newrow_width += ctx.measureText(ta[ta.length - i]).width;
-            }
-            i++;
-        }
-
-        console.log("moving " + i + " words into second row");
-
-        // we need to move i words onto a second row
-
-        return [ta.slice(0,ta.length-i).join(" "),
-               ta.slice(ta.length-i).join(" ")];
-    } else {
-        return [text];
-    }
-}
+//////formatText = function(text, ctx) {
+//////    var margin;
+//////    var text_width = ctx.measureText(text).width;
+//////
+////////    console.log(text_width);
+////////    console.log("ctx width is " + ctx.width);
+//////
+//////    if (text_width >= ctx.width) {
+//////        var ta = text.split(" ");
+//////
+//////        var i = 0;
+//////        var newrow_width = 0;
+//////
+//////        while (text_width - newrow_width >= ctx.width) {
+//////            if (ta[ta.length - i]) {
+//////                newrow_width += ctx.measureText(ta[ta.length - i]).width;
+//////            }
+//////            i++;
+//////        }
+//////
+//////        console.log("moving " + i + " words into second row");
+//////
+//////        // we need to move i words onto a second row
+//////
+//////        return [ta.slice(0,ta.length-i).join(" "),
+//////               ta.slice(ta.length-i).join(" ")];
+//////    } else {
+//////        return [text];
+//////    }
+//////}
 
 formatText2 = function(text, ctx) {
 //    ctx.width -= 5; // add a bit of a margin
 
     var text_width = ctx.measureText(text).width;
 
-    if (text_width >= ctx.width) {
+    if (text_width >= ctx.c.style.width) {
         console.log("text length exceeded");
         // begin splitting lines
 
@@ -166,12 +174,12 @@ formatText2 = function(text, ctx) {
 
 // break a 2D array of words into more rows until they fit
 breakTextArray = function(ta, ctx) {
-    if (wordArrayLength(ta, ctx) > ctx.width && ta.length > 1) {
+    if (wordArrayLength(ta, ctx) > ctx.c.style.width && ta.length > 1) {
         console.log("breaking a row of length " +  ta.length);
         // find min number of words required to make first line fit
         var i;
         for (i = 0; i < ta.length; i++) {
-            if (wordArrayLength(ta.slice(0,i+1), ctx) > ctx.width) {
+            if (wordArrayLength(ta.slice(0,i+1), ctx) > ctx.c.style.width) {
                 var cutpt = Math.max(i,1);
                 return [ta.slice(0,cutpt)].concat(breakTextArray(ta.slice(cutpt),ctx));
             }
@@ -208,7 +216,7 @@ wordArrayLength = function(a, ctx) {
      <div id="editor" style="margin: 0; padding: 0; height: 775px; width: 456px; float: left;">
       <div width="456" height="600">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
-          <canvas id="editor-canvas" width="456" height="600" style="position:relative;"> </canvas>
+          <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index=1"> </canvas>
       </div>
       <form>
           <input type="text" name="top" id="top"/><br />
