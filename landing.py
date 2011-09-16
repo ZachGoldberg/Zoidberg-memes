@@ -36,6 +36,16 @@ class LandingPortal(webapp.RequestHandler):
         create_meme(top,bottom,base64.b64decode(theMeme64))
         self.redirect('/')
 
+class ShowMeme(webapp.RequestHandler):
+    def get(self):
+        img_id = self.request.get('id')
+        url = 'serve?t=m&id='+img_id;
+        meme_data = {
+            'meme_url': url
+        }
+        
+        path = os.path.join(os.path.dirname(__file__), 'html/meme.html')
+        self.response.out.write(template.render(path, meme_data))
 
 class ServeImage(webapp.RequestHandler):
 
@@ -76,15 +86,22 @@ class AddTemplate(webapp.RequestHandler):
         create_template(t_name, t_img)
         self.redirect('/addTemplate?s=s')
 
+class PageNotFound(webapp.RequestHandler):
+    def get(self):
+        self.error(404)
+        self.response.out.write("m?id=01a20e36d3b94cea")
+
 def main():
     application = webapp.WSGIApplication([
         (r'/', LandingPortal),
+        (r'/m', ShowMeme),
         (r'/addMeme', LandingPortal),
         (r'/serve', ServeImage),
         (r'/addTemplate', AddTemplate),
         (r'/procTemplate', AddTemplate)],
     debug=False)
     run_wsgi_app(application)
+
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,21 @@
+body {
+    background: white;
+    width: auto;
+}
+
+#header {
+    border-bottom: solid;
+    padding-bottom: 7px;
+    margin-bottom: 7px;
+}
+
+#header_contents {
+    width: 1150px;
+    margin: 0 auto 0 auto;
+}
+
+#c {
+    height: 775px;
+    width: 1150px;
+    margin: 0 auto 0 auto;
+}
