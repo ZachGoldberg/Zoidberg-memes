@@ -112,9 +112,22 @@ window.onload = function(){
     };
 
 
+    var changeStagingBuffer = undefined;
     changeStaging = function(me) {
+
+        // catch clicking a meme that is already selected
+        if (changeStagingBuffer === me.id) { 
+            return;
+        } else {
+            changeStagingBuffer = me.id;
+        }
+
+        changeStagingBuffer = me.id;
         stagingTemplate.style.display = 'none';
         loadingImg.style.display = 'block';
+        var c = document.getElementById('editor-canvas');
+        editor.removeChild(c);
+
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
@@ -123,8 +136,10 @@ window.onload = function(){
         height = me.getAttribute('h'),
         targets = [stagingTemplate];//editorElement, stagingTemplate],
         tlen = targets.length,
-        theForm = document.getElementById('input');
+        theForm = document.getElementById('input'),
+        tuid = document.getElementById('tuid');
 
+        tuid.value = me.id; // retain template id
         theForm.style.display = 'none';
 
         x = function() {
@@ -142,8 +157,6 @@ window.onload = function(){
             newCanvas.height = height;
             newCanvas.style.position = 'relative';
 
-            var c = document.getElementById('editor-canvas');
-            editor.removeChild(c);
             newCanvas.id = 'editor-canvas';
             editor.childNodes[editor.childNodes.length] = document.getElementById('input');
             editor.appendChild(newCanvas);
@@ -194,7 +207,6 @@ window.onload = function(){
         f.appendChild(imgField);
         return true;
     };
-
 
 }
 
@@ -354,11 +366,12 @@ wordArrayLength = function(a, ctx) {
 
     <div id="c"> 
      <div class="lpanel" id="editor">
-          <img id="staging_template" width="456" style="position: absolute;" />
+          <img id="staging_template" width="456" style="position: absolute;" {% if template_uid %} src="/serve?id={{template_uid}}&t=t" {% endif %}/>
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index: 100;"> </canvas>
           <form id="input" style="margin-top: 7px" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
               <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
               <div class="textfield"><input class="memetext" type="text" style="margin-bottom: 1px" name="top" id="top" size="24" tabindex=1 /></div>
+              <input type='hidden' id='tuid' name='tuid' />
               <div class="textfield"><input class="memetext" type="text" style="margin-top: 1px" name="bottom" id="bottom" size="24" tabindex=2 /></div>
               <p>Don't see a template you like? <a href="addTemplate">Upload your own!</a><p />
           </form>

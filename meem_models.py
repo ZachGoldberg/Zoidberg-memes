@@ -19,10 +19,11 @@ class Meme(db.Model):
     thumb = db.BlobProperty(default=None)
     meme_width = db.IntegerProperty
     meme_height = db.IntegerProperty
+    template_uid = db.StringProperty()
 
 
 # create_mem(str, str, str) [ the third string is the raw meme in base64 encoding]
-def create_meme(top, bottom, meme):
+def create_meme(top, bottom, meme, template_uid):
     """Create a meme object in the datastore"""
     m = Image(meme)
     thumb = Image(meme)
@@ -50,7 +51,8 @@ def create_meme(top, bottom, meme):
                 meme=meme,
                 meme_width=width,
                 meme_height=height,
-                thumb=thumb)
+                thumb=thumb,
+                template_uid=template_uid)
     meme.put()
     return meme
 
