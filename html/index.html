@@ -115,6 +115,9 @@ window.onload = function(){
     changeStaging = function(me) {
         stagingTemplate.style.display = 'none';
         loadingImg.style.display = 'block';
+        var c = document.getElementById('editor-canvas');
+        editor.removeChild(c);
+
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
@@ -144,8 +147,6 @@ window.onload = function(){
             newCanvas.height = height;
             newCanvas.style.position = 'relative';
 
-            var c = document.getElementById('editor-canvas');
-            editor.removeChild(c);
             newCanvas.id = 'editor-canvas';
             editor.childNodes[editor.childNodes.length] = document.getElementById('input');
             editor.appendChild(newCanvas);
