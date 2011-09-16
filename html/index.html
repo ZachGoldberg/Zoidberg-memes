@@ -96,14 +96,14 @@ window.onload = function(){
     editorElement = document.getElementById('editor');
 
 
-        changeStaging = function(me) {
+    changeStaging = function(me) {
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
         newTarget = "/serve?t=t&id=" + old,
         width = me.getAttribute('w'),
         height = me.getAttribute('h'),
-        targets = [editorElement, stagingTemplate],
+        targets = [stagingTemplate];//editorElement, stagingTemplate],
         tlen = targets.length;
 
         stagingTemplate.src = newTarget;
@@ -115,7 +115,6 @@ window.onload = function(){
         
         var newCanvas = document.createElement('canvas'),
         editor = document.getElementById('editor');
-        //newCanvas.style = c.style;
         newCanvas.width = width;
         newCanvas.height = height;
         newCanvas.style.position = 'relative';
