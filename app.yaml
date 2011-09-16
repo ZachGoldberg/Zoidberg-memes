@@ -11,6 +11,10 @@ handlers:
 - url: /canvas-test
   static_dir: canvas-test
 
+- url: /addTemplate
+  script: landing.py
+  login: admin
+
 - url:  /.*
   script: landing.py 
 

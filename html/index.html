@@ -95,62 +95,74 @@ window.onload = function(){
 
     var stagingTemplate = document.getElementById('staging_template'),
     canvasElement = document.getElementById('editor-canvas'),
-    editorElement = document.getElementById('editor');
+    editorElement = document.getElementById('editor'),
+    loadingImg = document.createElement('img');
+
+    loadingImg.id = 'loading';
+    loadingImg.src = '/static/loading.gif';
+    editor.appendChild(loadingImg);
+    loadingImg.onload = function() {
+        this.style.display= 'none';
+        this.style.position = 'relative';
+        this.style.float = 'left';
+        this.style.zIndex = 5000;
+    };
 
 
-        changeStaging = function(me) {
+    changeStaging = function(me) {
+        stagingTemplate.display = 'none';
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
         newTarget = "/serve?t=t&id=" + old,
         width = me.getAttribute('w'),
         height = me.getAttribute('h'),
-        targets = [editorElement, stagingTemplate],
+        targets = [stagingTemplate];//editorElement, stagingTemplate],
         tlen = targets.length;
 
         stagingTemplate.src = newTarget;
-        for (var t = 0; t < tlen; t++){
-            targets[t].style.width = width;
-            targets[t].style.height = height;
-        }
-        canvasElement.width = width;
-        
-        var newCanvas = document.createElement('canvas'),
-        editor = document.getElementById('editor');
-        //newCanvas.style = c.style;
-        newCanvas.width = width;
-        newCanvas.height = height;
-        newCanvas.style.position = 'relative';
-        var c = document.getElementById('editor-canvas');
-        editor.removeChild(c);
-        newCanvas.id = 'editor-canvas';
-        editor.childNodes[editor.childNodes.length] = document.getElementById('input');
-        editor.appendChild(newCanvas);
-        editor.appendChild(document.getElementById('input'));
-        editor.childNodes[5] = undefined;
-        console.log("editor-canvas should be not null and is " + document.getElementById('editor-canvas'));
+        x = function() { 
+            stagingTemplate.display = 'block';
+            for (var t = 0; t < tlen; t++){
+                targets[t].style.width = width;
+                targets[t].style.height = height;
+            }
+            
+            var newCanvas = document.createElement('canvas'),
+            editor = document.getElementById('editor');
+            newCanvas.width = width;
+            newCanvas.height = height;
+            newCanvas.style.position = 'relative';
+            var c = document.getElementById('editor-canvas');
+            editor.removeChild(c);
+            newCanvas.id = 'editor-canvas';
+            editor.childNodes[editor.childNodes.length] = document.getElementById('input');
+            editor.appendChild(newCanvas);
+            editor.appendChild(document.getElementById('input'));
+            editor.childNodes[5] = undefined;
 
-        var c = document.getElementById('editor-canvas');
-        //    c.style.width = c.width;
-        //    c.style.height = c.height;
+            var c = document.getElementById('editor-canvas');
             var ctx = c.getContext("2d");
             ctx = initContextForText(ctx);
 
-            console.log("new canvas height is actually " + ctx.canvas.height);
 
-        top.onkeyup = function() {
-            this.modified = true;
+            top.onkeyup = function() {
+                this.modified = true;
+
+                updateMemeTextFromFields(top,bottom,ctx);
+            }
+
+            bottom.onkeyup = function() {
+                this.modified = true;
+
+                updateMemeTextFromFields(top,bottom,ctx);
+            }
 
             updateMemeTextFromFields(top,bottom,ctx);
         }
-
-        bottom.onkeyup = function() {
-            this.modified = true;
-
-            updateMemeTextFromFields(top,bottom,ctx);
-        }
-
-        updateMemeTextFromFields(top,bottom,ctx);
+        loadingImg.style.display = 'block';
+        stagingTemplate.onload = x;
+        loadingImg.style.display = 'none';
    }
 
 
@@ -161,7 +173,6 @@ window.onload = function(){
 
         theCTxt.drawImage(template, 0, 0);
         updateMemeTextFromFields(top, bottom, theCTxt, false);
-//        writeMemeText(f.top.value, f.bottom.value, theCTxt,false);
 
         var theMeme = theC.toDataURL("image/jpeg"),
         imgField = document.createElement('input');
