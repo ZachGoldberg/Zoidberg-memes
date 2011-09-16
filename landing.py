@@ -6,6 +6,8 @@
 
 import os, logging, base64, re
 
+import cgi
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -39,9 +41,15 @@ class LandingPortal(webapp.RequestHandler):
 class ShowMeme(webapp.RequestHandler):
     def get(self):
         img_id = self.request.get('id')
-        url = 'serve?t=m&id='+img_id;
+        meme_url = 'serve?t=m&id='+img_id;
+        page_url = self.request.url;
+
         meme_data = {
-            'meme_url': url
+            'meme_url': meme_url,
+            'meme_author' : 'N/A',
+            'page_url' : cgi.escape(page_url),
+            'page_href' : cgi.escape('<a href="' + page_url + '">meme!</a>'),
+            'meme_img' : 'not implemented'
         }
         
         path = os.path.join(os.path.dirname(__file__), 'html/meme.html')
