@@ -105,12 +105,15 @@ window.onload = function(){
         this.style.display= 'none';
         this.style.position = 'relative';
         this.style.float = 'left';
-        this.style.zIndex = 5000;
+        this.style.zIndex = 0;
+        this.style.marginLeft = '230px';
+        this.style.marginTop = '250px';
     };
 
 
     changeStaging = function(me) {
-        stagingTemplate.display = 'none';
+        stagingTemplate.style.display = 'none';
+        loadingImg.style.display = 'block';
         // dynamically change the template
         var start = me.src.indexOf("id=")+3,
         old = me.src.substr(start,16),
@@ -120,10 +123,10 @@ window.onload = function(){
         targets = [stagingTemplate];//editorElement, stagingTemplate],
         tlen = targets.length;
 
-        stagingTemplate.src = newTarget;
         x = function() {
-            stagingTemplate.display = 'block';
-            for (var t = 0; t < tlen; t++){
+            stagingTemplate.style.display = 'block';
+            loadingImg.style.display = 'none';
+            for (var t = 0; t < tlen; t++) {
                 targets[t].style.width = width;
                 targets[t].style.height = height;
             }
@@ -133,6 +136,7 @@ window.onload = function(){
             newCanvas.width = width;
             newCanvas.height = height;
             newCanvas.style.position = 'relative';
+
             var c = document.getElementById('editor-canvas');
             editor.removeChild(c);
             newCanvas.id = 'editor-canvas';
@@ -160,9 +164,8 @@ window.onload = function(){
 
             updateMemeTextFromFields(top,bottom,ctx);
         }
-        loadingImg.style.display = 'block';
         stagingTemplate.onload = x;
-        loadingImg.style.display = 'none';
+        stagingTemplate.src = newTarget;
    }
 
 
