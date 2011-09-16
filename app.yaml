@@ -6,6 +6,7 @@ api_version: 1
 handlers:
 
 - url: /static
+  expiration: "7d"
   static_dir: static
 
 - url: /canvas-test
