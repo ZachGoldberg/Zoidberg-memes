@@ -122,11 +122,15 @@ window.onload = function(){
         width = me.getAttribute('w'),
         height = me.getAttribute('h'),
         targets = [stagingTemplate];//editorElement, stagingTemplate],
-        tlen = targets.length;
+        tlen = targets.length,
+        theForm = document.getElementById('input');
+
+        theForm.style.display = 'none';
 
         x = function() {
             stagingTemplate.style.display = 'block';
             loadingImg.style.display = 'none';
+            theForm.style.display = 'block';
             for (var t = 0; t < tlen; t++) {
                 targets[t].style.width = width;
                 targets[t].style.height = height;
@@ -165,6 +169,7 @@ window.onload = function(){
 
             updateMemeTextFromFields(top,bottom,ctx);
         }
+
         stagingTemplate.onload = x;
         stagingTemplate.src = newTarget;
    }
@@ -349,7 +354,7 @@ wordArrayLength = function(a, ctx) {
 
     <div id="c"> 
      <div class="lpanel" id="editor">
-          <img id="staging_template" width="456" height="600" style="position: absolute;" />
+          <img id="staging_template" width="456" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index: 100;"> </canvas>
           <form id="input" style="margin-top: 7px" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
               <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
