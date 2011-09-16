@@ -54,7 +54,7 @@ div.rpanel {
 input.shareurl {
     border-style: dashed;
     border-width: 1px;
-/*    border-color: black; */
+    border-color: black;
     padding-left: 1px;
     font-size: 16px;
 }
