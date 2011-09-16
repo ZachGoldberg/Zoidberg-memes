@@ -1,16 +1,26 @@
 <html>
 
 <head>
- <title>waterlol | meme generator</title>
+ <title>WATERLOL | β</title>
+ <link href="static/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+        <div id="header">
+            <div id="header_contents">
+                <a href="/"><img src="static/waterlol_banner.png" /></a>
+            </div>
+        </div>
+
+        <div id="c">
+            <div class="lpanel">
  <h1>Upload A Template</h1>
+ <p>Template uploading is limited to select beta testers. <br>We accept cash bribes only.</p>
  {{ status }}
  <form action="/procTemplate" enctype="multipart/form-data" method="post">
   <input type="file" id="template" name="template" /> 
   <br />
-  <label for="name">Meme name:</label>
+  <label for="name">Template name:</label>
   <input type="text" id="name" name="name" />
   <br />
   <label for="code">Beta code:</label>
@@ -19,6 +29,8 @@
   <br />
   <input type="submit" id="submit" value="Add!" />
  </form>
+ </div>
+ </div>
 </body>
 
 </html>
