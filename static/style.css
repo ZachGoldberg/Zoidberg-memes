@@ -22,7 +22,7 @@ body {
 }
 
 h2 {
-    margin-top: 0px;
+    margin-top: 35px;
     margin-bottom: 14px;
 }
 
@@ -48,9 +48,9 @@ div.rpanel {
 
 /* change this later to make it more pretty */
 input.shareurl {
-    border-style: solid;
+    border-style: dashed;
     border-width: 1px;
-    border-color: black;
+/*    border-color: black; */
     padding-left: 1px;
     font-size: 16px;
 }
