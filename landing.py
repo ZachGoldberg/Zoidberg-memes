@@ -22,10 +22,11 @@ from meem_models import Template, get_all_templates, get_template_by_id,\
 class LandingPortal(webapp.RequestHandler):
 
     def get(self):
+        template_uid = self.request.get('tuid')
         templates = get_all_templates()
-        logging.info(templates)
         template_data = {
-            'templates': templates
+            'templates': templates,
+            'template_uid': template_uid
         }
         path = os.path.join(os.path.dirname(__file__), 'html/index.html')
         self.response.out.write(template.render(path, template_data))
@@ -36,8 +37,9 @@ class LandingPortal(webapp.RequestHandler):
         theMeme = self.request.get('meme')
         top = self.request.get('top')
         bottom = self.request.get('bottom')
+        template_uid = self.request.get('tuid')
         theMeme64 = self.dataURLPattern.match(theMeme).group(2)
-        m = create_meme(top,bottom,base64.b64decode(theMeme64))
+        m = create_meme(top,bottom,base64.b64decode(theMeme64),template_uid)
         self.redirect('/m?id=' + m.uid)
 
 
@@ -60,7 +62,8 @@ class ShowMeme(webapp.RequestHandler):
             'meme_absurl': cgi.escape(meme_absurl),
             'page_url' : cgi.escape(page_url),
             'page_href' : cgi.escape('<a href="' + page_url + '">meme!</a>'),
-            'meme_img' : cgi.escape('<img src="' + meme_absurl + '" / >')
+            'meme_img' : cgi.escape('<img src="' + meme_absurl + '" / >'),
+            'template_uid': m.template_uid
         }
         
         path = os.path.join(os.path.dirname(__file__), 'html/meme.html')
