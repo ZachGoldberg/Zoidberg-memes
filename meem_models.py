@@ -28,8 +28,7 @@ def create_meme(top, bottom, meme):
     thumb = Image(meme)
     width, height = m.width, m.height
     
-    if m.width > 500:
-        logging.info("Here")
+    if m.width != 500:
         m.resize(width=500)
         m = m.execute_transforms()
         
@@ -79,7 +78,7 @@ def create_template(name, img):
     t_img = db.Blob(img)
     width, height = template_data.width, template_data.height
 
-    if width > 500:
+    if width != 500:
         template_data.resize(width=500)
         template_data = template_data.execute_transforms(quality=85)
         t_data = Image(template_data)
