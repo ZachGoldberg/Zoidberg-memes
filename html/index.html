@@ -112,7 +112,17 @@ window.onload = function(){
     };
 
 
+    var changeStagingBuffer = undefined;
     changeStaging = function(me) {
+
+        // catch clicking a meme that is already selected
+        if (changeStagingBuffer === me.id) { 
+            return;
+        } else {
+            changeStagingBuffer = me.id;
+        }
+
+        changeStagingBuffer = me.id;
         stagingTemplate.style.display = 'none';
         loadingImg.style.display = 'block';
         var c = document.getElementById('editor-canvas');
