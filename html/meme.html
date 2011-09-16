@@ -13,7 +13,7 @@
         <div id="c">
             <div class="lpanel">
                 <!-- put meme here --> 
-                <img src={{meme_url}}></img>
+                <img src={{meme_relurl}}></img>
                 <div id="meme_meta">
                     <p>By: {{meme_author}}</p>
                     <p><a href={{template_url}}>Create another meme with this template</a></p>
@@ -23,14 +23,14 @@
             <div class="rpanel">
                 <h2>Share this meme with your friends!</h2> 
                 <h3>Link</h3>
-                <input class="shareurl" id="pagelink" type="text" readonly="readonly" value='{{page_url}}'>
+                <input class="shareurl" id="pagelink" type="text" readonly="readonly" size=45 value='{{page_url}}'>
                 <h3>Image link</h3>
-                <input class="shareurl" id="imglink" type="text" readonly="readonly" value='{{meme_url}}'>
+                <input class="shareurl" id="imglink" type="text" readonly="readonly" size=45 value='{{meme_absurl}}'>
                 <h3>HTML link</h3>
-                <input class="shareurl" id="htmlpagelink" type="text" readonly="readonly" value='{{page_href}}'>
+                <input class="shareurl" id="htmlpagelink" type="text" readonly="readonly" size=45 value='{{page_href}}'>
                 <h3>HTML image</h3>
-                <input class="shareurl" id="htmlimglink" type="text" readonly="readonly" value='{{meme_img}}'>
-                <p>TODO: Implement: Google+ share button, Facebook share button</p>
+                <input class="shareurl" id="htmlimglink" type="text" readonly="readonly" size=45 value='{{meme_img}}'>
+                <p><br />TODO: Implement: Google+ share button, Facebook share button</p>
             </div>
 
         </div>

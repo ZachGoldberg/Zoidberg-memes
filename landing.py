@@ -41,15 +41,17 @@ class LandingPortal(webapp.RequestHandler):
 class ShowMeme(webapp.RequestHandler):
     def get(self):
         img_id = self.request.get('id')
-        meme_url = 'serve?t=m&id='+img_id;
+        meme_relurl = 'serve?t=m&id='+img_id;
+        meme_absurl = 'http://dev.waterlol.com/serve?t=m&id=' + img_id # temporary. make this dynamic before release
         page_url = self.request.url;
 
         meme_data = {
-            'meme_url': meme_url,
+            'meme_relurl': meme_relurl,
             'meme_author' : 'N/A',
+            'meme_absurl': cgi.escape(meme_absurl),
             'page_url' : cgi.escape(page_url),
             'page_href' : cgi.escape('<a href="' + page_url + '">meme!</a>'),
-            'meme_img' : 'not implemented'
+            'meme_img' : cgi.escape('<img src="' + meme_absurl + '" / >')
         }
         
         path = os.path.join(os.path.dirname(__file__), 'html/meme.html')
