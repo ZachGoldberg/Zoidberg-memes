@@ -1,12 +1,13 @@
 body {
     background: white;
     width: auto;
+    font-family: helvetica, arial, sans-serif;
 }
 
 #header {
     border-bottom: solid;
-    padding-bottom: 7px;
-    margin-bottom: 7px;
+    padding-bottom: 8px;
+    margin-bottom: 13px;
 }
 
 #header_contents {
@@ -18,4 +19,30 @@ body {
     height: 775px;
     width: 1150px;
     margin: 0 auto 0 auto;
+}
+
+h2 {
+    margin-top: 0px;
+    margin-bottom: 14px;
+}
+
+h3 {
+    margin: 13px 0 7px 0;
+
+}
+
+div.lpanel {
+    margin: 0 12px 0 0;
+    padding: 0;
+    height: 775px;
+    width: 500px;
+    float: left;
+}
+
+div.rpanel {
+    margin-left: 5px;
+    padding: 0;
+    height: 775px;
+    float: left;
+    width: 633px;
 }
