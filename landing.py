@@ -74,7 +74,7 @@ class ServeImage(webapp.RequestHandler):
 
     def get(self):
         self.response.headers.add_header("Expires", "Thu, 01 Dec 2014 16")
-        self.response.headers.["Cache-Control"]="public, max-age=3660000"
+        self.response.headers['Cache-Control']="public, max-age=3660000"
 
         image_type = self.request.get('t')
         img_id = self.request.get('id')
