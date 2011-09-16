@@ -35,8 +35,8 @@ class LandingPortal(webapp.RequestHandler):
         top = self.request.get('top')
         bottom = self.request.get('bottom')
         theMeme64 = self.dataURLPattern.match(theMeme).group(2)
-        create_meme(top,bottom,base64.b64decode(theMeme64))
-        self.redirect('/')
+        m = create_meme(top,bottom,base64.b64decode(theMeme64))
+        self.redirect('/m?id=' + m.uid)
 
 class ShowMeme(webapp.RequestHandler):
     def get(self):

@@ -52,6 +52,7 @@ def create_meme(top, bottom, meme):
                 meme_height=height,
                 thumb=thumb)
     meme.put()
+    return meme
 
 
 def get_meme_by_id(uid):
