@@ -86,11 +86,6 @@ class AddTemplate(webapp.RequestHandler):
         create_template(t_name, t_img)
         self.redirect('/addTemplate?s=s')
 
-class PageNotFound(webapp.RequestHandler):
-    def get(self):
-        self.error(404)
-        self.response.out.write("m?id=01a20e36d3b94cea")
-
 def main():
     application = webapp.WSGIApplication([
         (r'/', LandingPortal),
