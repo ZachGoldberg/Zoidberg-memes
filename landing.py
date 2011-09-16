@@ -47,7 +47,7 @@ class ShowMeme(webapp.RequestHandler):
         m = get_meme_by_id(img_id)
 
         if m is None:
-            self.redirect('/m?id=01a20e36d3b94cea')
+            self.redirect('/m?id=f3b193295d624014')
             return
 
         meme_relurl = 'serve?t=m&id='+img_id;
