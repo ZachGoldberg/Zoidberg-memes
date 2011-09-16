@@ -110,3 +110,13 @@ def get_all_template_ids():
 
 def get_template_by_id(uid):
     return Template.all().filter('uid =', uid).get()
+
+
+class BetaTicket(db.Model):
+    """Model for storing meem templates"""
+    code = db.StringProperty()
+
+
+def code_is_valid(code):
+    return BetaTicket.all().filter('code =', code).get()
+ 
