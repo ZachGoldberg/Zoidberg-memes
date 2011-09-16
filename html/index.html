@@ -2,6 +2,8 @@
 
 
 <head>
+<link href="static/style.css" rel="stylesheet" type="text/css">
+
 
 <style type="text/css">
 @font-face {
@@ -319,30 +321,27 @@ wordArrayLength = function(a, ctx) {
 
 </head>
 
-<body id="body" style="background: white;" style="width: 1950px;">
+<body id="body">
 
     <div id="header">
-        <div id="header_contents" style="width: 950px; margin: 0 auto 0 auto;">
+        <div id="header_contents">
             <a href="/"><img src="static/waterlol_banner.png" /></a>
         </div>
-        <hr />
     </div>
 
-    <div id="c" style="margin: 0 auto 0 auto; height: 775px; width:1150px;"> 
-     <div id="editor" style="margin: 0 12px 0 0; padding: 0; height: 775px; width: 500px; float: left;">
+    <div id="c"> 
+     <div class="lpanel" id="editor">
           <img id="staging_template" width="456" height="600" style="position: absolute;" />
           <canvas id="editor-canvas" width="456" height="600" style="position:relative; z-index: 100;"> </canvas>
-      <div id="controls" style="margin-top: 6px">
-          <form id="input" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
+          <form id="input" style="margin-top: 7px" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
               <input type="submit" name="bake" id="bake" value="bake" style="float:right;" tabindex=3 />
-              <div class="textfield"><input class="memetext" type="text" name="top" id="top" size="24" tabindex=1 /></div>
-              <div class="textfield"><input class="memetext" type="text" name="bottom" id="bottom" size="24" tabindex=2 /></div>
+              <div class="textfield"><input class="memetext" type="text" style="margin-bottom: 1px" name="top" id="top" size="24" tabindex=1 /></div>
+              <div class="textfield"><input class="memetext" type="text" style="margin-top: 1px" name="bottom" id="bottom" size="24" tabindex=2 /></div>
               <p>Don't see a template you like? <a href="addTemplate">Upload your own!</a><p />
           </form>
-     </div>
      </div> <!-- editor done --!>
      
-     <div id="thumbs" style="margin: 5px; padding: 0; height: 775px; float: left; width: 435px;">
+     <div class="rpanel" id="thumbs">
      {% for t in templates %}
         <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}">
      {% endfor %}
