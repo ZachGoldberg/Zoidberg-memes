@@ -44,6 +44,12 @@ class LandingPortal(webapp.RequestHandler):
 class ShowMeme(webapp.RequestHandler):
     def get(self):
         img_id = self.request.get('id')
+        m = get_meme_by_id(img_id)
+
+        if m is None:
+            self.redirect('/m?id=f3b193295d624014')
+            return
+
         meme_relurl = 'serve?t=m&id='+img_id;
         meme_absurl = 'http://dev.waterlol.com/serve?t=m&id=' + img_id # temporary. make this dynamic before release
         page_url = self.request.url;
