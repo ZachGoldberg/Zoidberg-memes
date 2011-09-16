@@ -2,7 +2,7 @@
 
 # waterlol data models
 
-import logging
+import logging, random
 
 from google.appengine.ext import db, webapp
 from google.appengine.api import users
@@ -44,7 +44,7 @@ def create_meme(top, bottom, meme):
     thumb = thumb.execute_transforms(quality=70)
     thumb = db.Blob(thumb)
 
-    meme = Meme(uid=generate_uuid(16),
+    meme = Meme(uid=str(get_unique_code()),
                 top=top,
                 bottom=bottom,
                 meme=meme,
@@ -120,3 +120,37 @@ class BetaTicket(db.Model):
 def code_is_valid(code):
     return BetaTicket.all().filter('code =', code).get()
  
+
+class URICounter(db.Model):
+    count = db.IntegerProperty(indexed=True, required=True)
+    counters_total = db.IntegerProperty(indexed=False,default=20)
+    
+    def get_next(self):
+        c = self.count
+        self.count += self.counters_total
+        self.put()
+        return c
+
+def get_unique_code():
+    """Get a counter at random and return an unused code"""
+    counter_index = random.randint(0,19)
+    counter = URICounter.get_by_key_name(str(counter_index))
+    c = counter.get_next()
+    return c
+
+ALPHABET = 'ZbDYFQLXx0PsHtmIcC2GA1qjB78VUdywJThkpnfWrOgSKu3olM59RizE64vNae'
+def enc_b62(num):
+    """Encode a number to base 62"""
+    if num == 0:
+        return ALPHABET[0]
+    ret = []
+    while num:
+        rem = num % 62
+        num = num // 62
+        ret.append(ALPHABET[rem])
+    ret.reverse()
+    return ''.join(ret)
+                                                  
+
+def get_meme_url():
+    c = enc_b62(get_unique_code())
