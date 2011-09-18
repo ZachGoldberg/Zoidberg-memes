@@ -221,8 +221,8 @@ initContextForText = function (ctx) {
             this.fontsize = size;
             this.font = size + "px MemeImpact";
 
-            console.log("changed font size to " + this.fontsize);
-            console.log("changed font style string to " + this.font);
+//            console.log("changed font size to " + this.fontsize);
+//            console.log("changed font style string to " + this.font);
         }
     }
 
@@ -231,7 +231,7 @@ initContextForText = function (ctx) {
         var fontsize = Math.min(Math.ceil(0.12*this.canvas.height), 54);
         this.setFontSize(fontsize);
 
-        console.log("recomputing text size based on canvas height of " + this.canvas.height);
+//        console.log("recomputing text size based on canvas height of " + this.canvas.height);
     }
 
     ctx.strokeStyle = "#000";
@@ -267,7 +267,7 @@ writeMemeText = function(t,b,ctx,redraw) {
         ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     }
 
-    console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
+//    console.log("height: " + ctx.canvas.height + " width: " + ctx.canvas.width);
 
     // make nice offsets for line spacing and vertical margin
     var v_off = ctx.fontsize;
@@ -275,7 +275,8 @@ writeMemeText = function(t,b,ctx,redraw) {
 
     t = formatText(t, ctx);
     if (t) {
-        for (var i = 0; i < t.length; i++) {
+        var foo = t.length;
+        for (var i = 0; i < foo; i++) {
             ctx.fillText(t[i],ctx.canvas.width/2,v_off+v_off*i);
             ctx.strokeText(t[i],ctx.canvas.width/2,v_off+v_off*i);
         }
@@ -283,13 +284,15 @@ writeMemeText = function(t,b,ctx,redraw) {
 
     b = formatText(b, ctx);
     if (b) {
-        for (var i = 0; i < b.length; i++) {
+        foo = b.length;
+        for (var i = 0; i < foo; i++) {
             ctx.fillText(b[i],ctx.canvas.width/2,ctx.canvas.height-v_off-v_off*(b.length-1-i));
             ctx.strokeText(b[i],ctx.canvas.width/2,ctx.canvas.height-v_off-v_off*(b.length-1-i));
         }
+        console.timeEnd("timing writing bottom text");
     }
 
-    console.log(ctx.measureText(t));
+//    console.log(ctx.measureText(t));
     //console.log(formatText(t,ctx));
 }
 
@@ -303,7 +306,7 @@ formatText = function(text, ctx) {
     var text_width = ctx.measureText(text).width;
 
     if (text_width >= ctx.canvas.width) {
-        console.log("text length exceeded");
+//        console.log("text length exceeded");
         // begin splitting lines
 
         // we want a 2D array of words
@@ -323,7 +326,7 @@ formatText = function(text, ctx) {
 // break a 2D array of words into more rows until they fit
 breakTextArray = function(ta, ctx) {
     if (wordArrayLength(ta, ctx) > ctx.canvas.width && ta.length > 1) {
-        console.log("breaking a row of length " +  ta.length);
+//        console.log("breaking a row of length " +  ta.length);
         // find min number of words required to make first line fit
         var i;
         for (i = 0; i < ta.length; i++) {
@@ -335,7 +338,7 @@ breakTextArray = function(ta, ctx) {
         }
 
     }
-    console.log("wtf man");
+//    console.log("wtf man");
     return [ta];
 }
 
@@ -350,7 +353,7 @@ wordArrayLength = function(a, ctx) {
 
     total_length += spc_width*(Math.max(a.length-1,0));
 
-    console.log("wordArrayLength finds length of " + total_length);
+//    console.log("wordArrayLength finds length of " + total_length);
     return total_length;
 }
 
@@ -362,6 +365,9 @@ wordArrayLength = function(a, ctx) {
 
     <div id="header">
         <div id="header_contents">
+            <div style="padding: 7px 16px; border-radius: 10px; -moz-border-radius: 10px; background-color: #FFFF85; border-color: #F68F87; border-width: 1px; border-style: dashed; margin-top: 6px; margin-right: 135px; position: relative; float: right; width: 450px; font-size: 13;">
+                Hello! Waterlol is currently undergoing beta testing. Features are added on a daily basis. Database resets may happen without warning at any time.
+            </div>
             <a href="/"><img src="static/waterlol_banner.png" /></a>
         </div>
     </div>
