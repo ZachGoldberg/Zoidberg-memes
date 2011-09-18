@@ -193,6 +193,8 @@ window.onload = function(){
         template = document.getElementById('staging_template'),
         theCTxt = theC.getContext("2d");
 
+        console.log(f.top.value);
+        console.log(f.bottom.value);
         theCTxt.drawImage(template, 0, 0);
         updateMemeTextFromFields(top, bottom, theCTxt, false);
 

@@ -20,6 +20,3 @@ handlers:
 
 - url:  /.*
   script: landing.py 
-
-- url: /m*
-  script: landing.py
