@@ -296,7 +296,6 @@ writeMemeText = function(t,b,ctx,redraw) {
 
 
 formatText = function(text, ctx) {
-//    ctx.width -= 5; // add a bit of a margin
     if (!text) {
         return;
     }
@@ -304,7 +303,6 @@ formatText = function(text, ctx) {
     var text_width = ctx.measureText(text).width;
 
     if (text_width >= ctx.canvas.width) {
-//        console.log("text length exceeded");
         // begin splitting lines
 
         // we want a 2D array of words
@@ -321,39 +319,55 @@ formatText = function(text, ctx) {
     }
 }
 
-// break a 2D array of words into more rows until they fit
+// break an array words into more rows until they fit
 breakTextArray = function(ta, ctx) {
-    if (wordArrayLength(ta, ctx) > ctx.canvas.width && ta.length > 1) {
-//        console.log("breaking a row of length " +  ta.length);
-        // find min number of words required to make first line fit
-        var i;
-        for (i = 0; i < ta.length; i++) {
-            if (wordArrayLength(ta.slice(0,i+1), ctx) > ctx.canvas.width) {
-                var cutpt = Math.max(i,1);
-                return [ta.slice(0,cutpt)].concat(breakTextArray(ta.slice(cutpt),ctx));
+    var start, end;
+    var rowwidth = ctx.canvas.width;
+    var spacewidth = ctx.measureText(" ").width;
+
+    start = 0;
+    end = 0;
+
+    var last = ta.length;
+
+    var out = [];
+
+    var cur_length = 0;
+
+    while (end < last) {
+        cur_length += ctx.measureText(ta[end]).width;
+
+        if (cur_length >= rowwidth) {
+            // move everything from before now into a row
+            if (start == end) {
+                // handle case of single word longer than row
+                out.push([ta[start]]);
+
+                start++;
+                end++;
+
+                cur_length = 0;
+            } else {
+                out.push(ta.slice(start, end));
+                start = end;
+                
+                cur_length = 0;
             }
 
+        } else {
+            // we've advanced by a word. account for space.
+            end++;
+            cur_length += spacewidth;
         }
-
-    }
-//    console.log("wtf man");
-    return [ta];
-}
-
-// find length of 1-D word array given canvas context
-wordArrayLength = function(a, ctx) {
-    var spc_width = ctx.measureText(" ").width;
-    var total_length = 0;
-
-    for (var i = 0; i < a.length; i++) {
-        total_length += ctx.measureText(a[i]).width;
     }
 
-    total_length += spc_width*(Math.max(a.length-1,0));
+    if (start != end) {
+        out.push(ta.slice(start,end));
+    }
 
-//    console.log("wordArrayLength finds length of " + total_length);
-    return total_length;
+    return out;
 }
+
 
 </script>
 
