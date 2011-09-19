@@ -42,10 +42,10 @@ def create_meme(top, bottom, meme, template_uid):
         meme = db.Blob(meme)
 
     thumb.resize(height=125)
-    thumb = thumb.execute_transforms(quality=70)
+    thumb = thumb.execute_transforms(quality=60)
     thumb = db.Blob(thumb)
 
-    meme = Meme(uid=str(get_unique_code()),
+    meme = Meme(uid=str(get_meme_url()),
                 top=top,
                 bottom=bottom,
                 meme=meme,
@@ -60,6 +60,11 @@ def create_meme(top, bottom, meme, template_uid):
 def get_meme_by_id(uid):
     return Meme.all().filter('uid =', uid).get()
 
+def get_all_memes():
+    ms = []
+    for m in Meme.all():
+        ms.append((m.uid))
+    return ms
 
 class Template(db.Model):
     """Model for storing meem templates"""

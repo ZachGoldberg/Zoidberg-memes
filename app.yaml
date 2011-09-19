@@ -18,5 +18,8 @@ handlers:
 - url: /init
   script: init.py
 
+- url: /initFix
+  script: init.py
+
 - url:  /.*
   script: landing.py 

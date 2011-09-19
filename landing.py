@@ -16,7 +16,7 @@ from google.appengine.api import memcache
 
 from meem_models import Template, get_all_templates, get_template_by_id,\
     get_all_template_ids, create_template, create_meme, get_meme_by_id, code_is_valid,\
-    BetaTicket
+    BetaTicket, get_all_memes
 
 
 class LandingPortal(webapp.RequestHandler):
@@ -94,6 +94,8 @@ class ServeImage(webapp.RequestHandler):
             if scale !='t': #thumb
                 self.response.headers['Content-Type'] = 'image/jpeg'
                 self.response.out.write(m.meme)
+            else:
+                self.response.out.write(m.thumb)
 
 
 class AddTemplate(webapp.RequestHandler):
@@ -116,10 +118,21 @@ class AddTemplate(webapp.RequestHandler):
         else:
             self.redirect('/addTemplate')
 
+class MemeGallery(webapp.RequestHandler):
+
+    def get(self):
+        memes = get_all_memes()
+        logging.info(memes)
+        template_values = { 'memes': memes }
+        path = os.path.join(os.path.dirname(__file__), 'html/meme_gallery.html')
+        self.response.out.write(template.render(path, template_values))
+
+
 def main():
     application = webapp.WSGIApplication([
         (r'/', LandingPortal),
         (r'/m(.*)', ShowMeme),
+        (r'/r', MemeGallery),
         (r'/addMeme', LandingPortal),
         (r'/serve', ServeImage),
         (r'/addTemplate', AddTemplate),
