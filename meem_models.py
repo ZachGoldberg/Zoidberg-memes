@@ -161,3 +161,4 @@ def enc_b62(num):
 
 def get_meme_url():
     c = enc_b62(get_unique_code())
+    return c
