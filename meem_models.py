@@ -20,6 +20,7 @@ class Meme(db.Model):
     meme_width = db.IntegerProperty
     meme_height = db.IntegerProperty
     template_uid = db.StringProperty()
+    timestamp = db.DateTimeProperty(auto_now=True)
 
 
 # create_mem(str, str, str) [ the third string is the raw meme in base64 encoding]
@@ -63,7 +64,8 @@ def get_meme_by_id(uid):
 def get_all_memes():
     ms = []
     for m in Meme.all():
-        ms.append((m.uid))
+        ms.append((m.uid, m.timestamp))
+    sorted(ms, key=lambda meme: meme[1],reverse=True)
     return ms
 
 class Template(db.Model):

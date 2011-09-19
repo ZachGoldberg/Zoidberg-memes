@@ -4,7 +4,7 @@ from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-import logging
+import logging, datetime
 
 # models
 from meem_models import URICounter, Meme, enc_b62
@@ -27,9 +27,10 @@ class FixCodes(webapp.RequestHandler):
 
     def get(self):
         m = Meme.all()
+        yesterday = datetime.datetime.combine(datetime.date.today() - datetime.timedelta(1), datetime.time())
+        logging.info(str(type(yesterday)))
         for mm in m:
-            logging.info(mm.uid)
-            mm.uid = enc_b62(int(mm.uid))
+            mm.timestamp = yesterday
             mm.put()
         self.response.out.write("All failiures went undetected")
         

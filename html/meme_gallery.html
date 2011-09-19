@@ -29,7 +29,7 @@
 
         <div id="c">
             {% for m in memes %}
-            <a href="/m{{m}}"><img src="/serve?id={{m}}&t=m&s=t" /></a>
+            <a href="/m{{m.0}}"><img src="/serve?id={{m.0}}&t=m&s=t" /></a>
             {% endfor %}
         </div>
     </body>
