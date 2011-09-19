@@ -198,10 +198,12 @@ window.onload = function(){
         template = document.getElementById('staging_template'),
         theCTxt = theC.getContext("2d");
 
-        if (f.top.value === 'Top text'){
+        console.log(f.top.modified);
+
+        if (!f.top.modified){
             f.top.value = '';
         }
-        if (f.bottom.value === 'Bottom text'){
+        if (!f.bottom.modified){
             f.bottom.value = '';
         }
 
@@ -396,6 +398,23 @@ breakTextArray = function(ta, ctx) {
     return out;
 }
 
+
+</script>
+
+
+// Google Analytics
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25801059-1']);
+  _gaq.push(['_setDomainName', 'waterlol.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 
 </script>
 
