@@ -198,10 +198,12 @@ window.onload = function(){
         template = document.getElementById('staging_template'),
         theCTxt = theC.getContext("2d");
 
-        if (f.top.value === 'Top text'){
+        console.log(f.top.modified);
+
+        if (!f.top.modified){
             f.top.value = '';
         }
-        if (f.bottom.value === 'Bottom text'){
+        if (!f.bottom.modified){
             f.bottom.value = '';
         }
 
