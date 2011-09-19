@@ -62,3 +62,9 @@ input.shareurl {
 img.thumbnail {
     margin: 0 5px 5px 0;
 }
+
+/* make it more obvious that thumbnails are clickable.
+                                Thanks Andrew Russel */
+#thumbs>img {
+    cursor: pointer;
+}
