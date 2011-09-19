@@ -1,4 +1,4 @@
-<Html>
+<html>
 
 
 <head>
@@ -220,6 +220,26 @@ window.onload = function(){
         return true;
     };
 
+    var theTemplates = document.getElementsByClassName('templates'),
+    templateContainer = document.getElementById('thumbs'),
+    ts = theTemplates.length;
+    for (var i = 0; i < ts; i++) {
+        var imgT = document.createElement('img'),
+        targets = ['src', 'onclick', 'w', 'h', 'id'],
+        targetsLen = targets.length;
+
+        for (var l = 0; l < targetsLen; l++) {
+            var attrib = targets[l];
+            imgT.setAttribute(attrib, theTemplates[i].getAttribute(attrib));
+        }
+
+        //imgT.src = theTemplates[i].getAttribute('src');
+        //imgT.setAttribute('onclick', theTemplates[i].getAttribute('onclick'));
+        //imgT.w = theTemplates[i].getAttribute('w');
+        //imgT.h = theTemplates[i].getAttribute('h');
+        console.log(imgT);
+        thumbs.appendChild(imgT);
+    }
 }
 
 
@@ -397,7 +417,7 @@ wordArrayLength = function(a, ctx) {
      
      <div class="rpanel" id="thumbs">
      {% for t in templates %}
-        <img src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}">
+        <div class="templates" src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}">
      {% endfor %}
      </div>
 
