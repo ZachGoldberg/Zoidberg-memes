@@ -65,7 +65,8 @@ def get_all_memes():
     ms = []
     for m in Meme.all():
         ms.append((m.uid, m.timestamp))
-    sorted(ms, key=lambda meme: meme[1],reverse=True)
+    sorted(ms, key=lambda meme: meme[1],reverse=False)
+    ms.reverse()
     return ms
 
 class Template(db.Model):
