@@ -57,7 +57,7 @@ class ShowMeme(webapp.RequestHandler):
             return
 
         meme_relurl = 'serve?t=m&id='+meme_id;
-        meme_absurl = 'http://dev.waterlol.com/serve?t=m&id=' + meme_id # temporary. make this dynamic before release
+        meme_absurl = 'http://www.waterlol.com/serve?t=m&id=' + meme_id # temporary. make this dynamic before release
         page_url = self.request.url;
 
         meme_data = {
