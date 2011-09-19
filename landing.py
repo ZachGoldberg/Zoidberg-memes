@@ -87,7 +87,7 @@ class ServeImage(webapp.RequestHandler):
                 self.response.headers['Content-Type'] = 'image/jpeg'
                 self.response.out.write(t.thumb)
             else:
-                self.response.headers['Content-Type'] = 'image/jpeg'
+                self.response.headers['Content-Type'] = 'image/png'
                 self.response.out.write(t.img)
         elif image_type == 'm': # meme requested
             m = get_meme_by_id(img_id)
@@ -95,6 +95,7 @@ class ServeImage(webapp.RequestHandler):
                 self.response.headers['Content-Type'] = 'image/jpeg'
                 self.response.out.write(m.meme)
             else:
+                self.response.headers['Content-Type'] = 'images/jpeg'
                 self.response.out.write(m.thumb)
 
 

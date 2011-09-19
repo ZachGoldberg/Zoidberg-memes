@@ -42,7 +42,7 @@ def create_meme(top, bottom, meme, template_uid):
         meme = db.Blob(meme)
 
     thumb.resize(height=125)
-    thumb = thumb.execute_transforms(quality=75,output_encoding=JPEG)
+    thumb = thumb.execute_transforms(quality=85,output_encoding=JPEG)
     thumb = db.Blob(thumb)
 
     meme = Meme(uid=str(get_meme_url()),
@@ -88,13 +88,13 @@ def create_template(name, img):
 
     if width != 500:
         template_data.resize(width=500)
-        template_data = template_data.execute_transforms(quality=85)
+        template_data = template_data.execute_transforms()
         t_data = Image(template_data)
         width, height = t_data.width, t_data.height
         t_img = db.Blob(template_data)
 
     thumb.resize(height=125)
-    thumb = thumb.execute_transforms(quality=70)
+    thumb = thumb.execute_transforms(quality=75,output_encoding=JPEG)
 
     t = Template(uid=generate_uuid(16),
                  name=name,
