@@ -112,9 +112,11 @@ window.onload = function(){
     };
 
 
-    var changeStagingBuffer = undefined;
+    var changeStagingBuffer = undefined,
+    dc = 0;
     changeStaging = function(me) {
-
+        dc++;
+        console.log("Fire " + dc + "!");
         // catch clicking a meme that is already selected
         if (changeStagingBuffer === me.id) { 
             return;
@@ -126,65 +128,68 @@ window.onload = function(){
         stagingTemplate.style.display = 'none';
         loadingImg.style.display = 'block';
         var c = document.getElementById('editor-canvas');
-        editor.removeChild(c);
-
-        // dynamically change the template
-        var start = me.src.indexOf("id=")+3,
-        old = me.src.substr(start,16),
-        newTarget = "/serve?t=t&id=" + old,
-        width = me.getAttribute('w'),
-        height = me.getAttribute('h'),
-        targets = [stagingTemplate];//editorElement, stagingTemplate],
-        tlen = targets.length,
-        theForm = document.getElementById('input'),
-        tuid = document.getElementById('tuid');
-
-        tuid.value = me.id; // retain template id
-        theForm.style.display = 'none';
-
-        x = function() {
-            stagingTemplate.style.display = 'block';
-            loadingImg.style.display = 'none';
-            theForm.style.display = 'block';
-            for (var t = 0; t < tlen; t++) {
-                targets[t].style.width = width;
-                targets[t].style.height = height;
-            }
-            
-            var newCanvas = document.createElement('canvas'),
-            editor = document.getElementById('editor');
-            newCanvas.width = width;
-            newCanvas.height = height;
-            newCanvas.style.position = 'relative';
-
-            newCanvas.id = 'editor-canvas';
-            editor.childNodes[editor.childNodes.length] = document.getElementById('input');
-            editor.appendChild(newCanvas);
-            editor.appendChild(document.getElementById('input'));
-            editor.childNodes[5] = undefined;
-
-            var c = document.getElementById('editor-canvas');
-            var ctx = c.getContext("2d");
-            ctx = initContextForText(ctx);
-
-
-            top.onkeyup = function() {
-                this.modified = true;
-
-                updateMemeTextFromFields(top,bottom,ctx);
-            }
-
-            bottom.onkeyup = function() {
-                this.modified = true;
-
-                updateMemeTextFromFields(top,bottom,ctx);
-            }
-
-            updateMemeTextFromFields(top,bottom,ctx);
+        if (c) {
+            // the canvas may not be present
+            editor.removeChild(c);
         }
 
-        stagingTemplate.onload = x;
-        stagingTemplate.src = newTarget;
+       // dynamically change the template
+       var start = me.src.indexOf("id=")+3,
+       old = me.src.substr(start,16),
+       newTarget = "/serve?t=t&id=" + old,
+       width = me.getAttribute('w'),
+       height = me.getAttribute('h'),
+       targets = [stagingTemplate];//editorElement, stagingTemplate],
+       tlen = targets.length,
+       theForm = document.getElementById('input'),
+       tuid = document.getElementById('tuid');
+
+       tuid.value = me.id; // retain template id
+       theForm.style.display = 'none';
+
+       x = function() {
+           stagingTemplate.style.display = 'block';
+           loadingImg.style.display = 'none';
+           theForm.style.display = 'block';
+           for (var t = 0; t < tlen; t++) {
+               targets[t].style.width = width;
+               targets[t].style.height = height;
+           }
+           
+           var newCanvas = document.createElement('canvas'),
+           editor = document.getElementById('editor');
+           newCanvas.width = width;
+           newCanvas.height = height;
+           newCanvas.style.position = 'relative';
+
+           newCanvas.id = 'editor-canvas';
+           editor.childNodes[editor.childNodes.length] = document.getElementById('input');
+           editor.appendChild(newCanvas);
+           editor.appendChild(document.getElementById('input'));
+           editor.childNodes[5] = undefined;
+
+           var c = document.getElementById('editor-canvas');
+           var ctx = c.getContext("2d");
+           ctx = initContextForText(ctx);
+
+
+           top.onkeyup = function() {
+               this.modified = true;
+
+               updateMemeTextFromFields(top,bottom,ctx);
+           }
+
+           bottom.onkeyup = function() {
+               this.modified = true;
+
+               updateMemeTextFromFields(top,bottom,ctx);
+           }
+
+           updateMemeTextFromFields(top,bottom,ctx);
+       }
+
+       stagingTemplate.onload = x;
+       stagingTemplate.src = newTarget;
    }
 
 
@@ -192,6 +197,13 @@ window.onload = function(){
         var theC = document.getElementById('editor-canvas'),
         template = document.getElementById('staging_template'),
         theCTxt = theC.getContext("2d");
+
+        if (f.top.value === 'Top text'){
+            f.top.value = '';
+        }
+        if (f.bottom.value === 'Bottom text'){
+            f.bottom.value = '';
+        }
 
         theCTxt.drawImage(template, 0, 0);
         updateMemeTextFromFields(top, bottom, theCTxt, false);

@@ -40,20 +40,20 @@ class LandingPortal(webapp.RequestHandler):
         template_uid = self.request.get('tuid')
         theMeme64 = self.dataURLPattern.match(theMeme).group(2)
         m = create_meme(top,bottom,base64.b64decode(theMeme64),template_uid)
-        self.redirect('/m?id=' + m.uid)
+        self.redirect('/m' + m.uid)
 
 
 class ShowMeme(webapp.RequestHandler):
-    def get(self):
-        img_id = self.request.get('id')
-        m = get_meme_by_id(img_id)
+    def get(self, meme_id):
+        m = get_meme_by_id(meme_id)
 
+        logging.info(m)
         if m is None:
-            self.redirect('/m?id=f3b193295d624014')
+            self.redirect('/')
             return
 
-        meme_relurl = 'serve?t=m&id='+img_id;
-        meme_absurl = 'http://dev.waterlol.com/serve?t=m&id=' + img_id # temporary. make this dynamic before release
+        meme_relurl = 'serve?t=m&id='+meme_id;
+        meme_absurl = 'http://dev.waterlol.com/serve?t=m&id=' + meme_id # temporary. make this dynamic before release
         page_url = self.request.url;
 
         meme_data = {
@@ -119,7 +119,7 @@ class AddTemplate(webapp.RequestHandler):
 def main():
     application = webapp.WSGIApplication([
         (r'/', LandingPortal),
-        (r'/m', ShowMeme),
+        (r'/m(.*)', ShowMeme),
         (r'/addMeme', LandingPortal),
         (r'/serve', ServeImage),
         (r'/addTemplate', AddTemplate),
