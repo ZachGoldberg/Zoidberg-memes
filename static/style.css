@@ -58,3 +58,7 @@ input.shareurl {
     padding-left: 1px;
     font-size: 16px;
 }
+
+img.thumbnail {
+    margin: 0 5px 5px 0;
+}
