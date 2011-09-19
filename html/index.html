@@ -232,12 +232,8 @@ window.onload = function(){
             var attrib = targets[l];
             imgT.setAttribute(attrib, theTemplates[i].getAttribute(attrib));
         }
+        imgT.setAttribute('class', 'thumbnail')
 
-        //imgT.src = theTemplates[i].getAttribute('src');
-        //imgT.setAttribute('onclick', theTemplates[i].getAttribute('onclick'));
-        //imgT.w = theTemplates[i].getAttribute('w');
-        //imgT.h = theTemplates[i].getAttribute('h');
-        console.log(imgT);
         thumbs.appendChild(imgT);
     }
 }
@@ -431,7 +427,7 @@ breakTextArray = function(ta, ctx) {
      
      <div class="rpanel" id="thumbs">
      {% for t in templates %}
-        <div class="templates" src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}">
+        <div class="templates" src="/serve?t=t&id={{ t.0 }}&s=t" onclick="changeStaging(this);" w="{{ t.2 }}" h="{{t.3}}"/ id="{{ t.0 }}"></div>
      {% endfor %}
      </div>
 
