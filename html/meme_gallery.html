@@ -1,3 +1,36 @@
-{% for m in memes %}
-<img src="/serve?id={{m}}&t=m&s=t" />
-{% endfor %}
+<html>
+    <head>
+        <title>WATERLOL | β</title>
+        <link href="static/style.css" rel="stylesheet" type="text/css">
+
+        <!-- Google Analytics -->
+        <script type="text/javascript">
+        
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-25801059-1']);
+          _gaq.push(['_setDomainName', 'waterlol.com']);
+          _gaq.push(['_trackPageview']);
+        
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        
+        </script>
+    </head>
+
+    <body>
+        <div id="header">
+            <div id="header_contents">
+                <a href="/"><img src="static/waterlol_banner.png" /></a>
+            </div>
+        </div>
+
+        <div id="c">
+            {% for m in memes %}
+            <a href="/m{{m}}"><img src="/serve?id={{m}}&t=m&s=t" /></a>
+            {% endfor %}
+        </div>
+    </body>
+</html>
