@@ -6,7 +6,7 @@ import logging, random
 
 from google.appengine.ext import db, webapp
 from google.appengine.api import users
-from google.appengine.api.images import Image, resize
+from google.appengine.api.images import Image, resize, JPEG
 
 from util import generate_uuid
 
@@ -31,7 +31,7 @@ def create_meme(top, bottom, meme, template_uid):
     
     if m.width != 500:
         m.resize(width=500)
-        m = m.execute_transforms()
+        m = m.execute_transforms(output_encoding=JPEG)
         
         moar_img_data = Image(m)
         width, height = moar_img_data.width, moar_img_data.height
@@ -42,7 +42,7 @@ def create_meme(top, bottom, meme, template_uid):
         meme = db.Blob(meme)
 
     thumb.resize(height=125)
-    thumb = thumb.execute_transforms(quality=60)
+    thumb = thumb.execute_transforms(quality=75,output_encoding=JPEG)
     thumb = db.Blob(thumb)
 
     meme = Meme(uid=str(get_meme_url()),
