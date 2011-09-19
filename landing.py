@@ -14,7 +14,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from google.appengine.api import memcache
 
-from meem_models import Template, get_all_templates, get_template_by_id,\
+from meem_models import Template, URICounter, get_all_templates, get_template_by_id,\
     get_all_template_ids, create_template, create_meme, get_meme_by_id, code_is_valid,\
     BetaTicket, get_all_memes
 
@@ -102,6 +102,61 @@ class ServeImage(webapp.RequestHandler):
                 self.response.headers['Content-Type'] = 'images/jpeg'
                 self.response.out.write(m.thumb)
 
+# yeah....
+class AddCode(webapp.RequestHandler):
+    def get(self):
+        c = BetaTicket(code="omguwbeta")
+        c2 = BetaTicket(code="googleinterns2011")
+
+        c.put()
+        c2.put()
+
+class InitURICounters(webapp.RequestHandler):
+    def get(self):
+        u1 = URICounter(key_name="1", count=1, counters_total=20)
+        u1.put()
+        u2 = URICounter(key_name="2", count=2, counters_total=20)
+        u2.put()
+        u3 = URICounter(key_name="3", count=3, counters_total=20)
+        u3.put()
+        u4 = URICounter(key_name="4", count=4, counters_total=20)
+        u4.put()
+        u5 = URICounter(key_name="5", count=5, counters_total=20)
+        u5.put()
+        u6 = URICounter(key_name="6", count=6, counters_total=20)
+        u6.put()
+        u7 = URICounter(key_name="7", count=7, counters_total=20)
+        u7.put()
+        u8 = URICounter(key_name="8", count=8, counters_total=20)
+        u8.put()
+        u9 = URICounter(key_name="9", count=9, counters_total=20)
+        u9.put()
+        u10 = URICounter(key_name="10", count=10, counters_total=20)
+        u10.put()
+        u11 = URICounter(key_name="11", count=11, counters_total=20)
+        u11.put()
+        u12 = URICounter(key_name="12", count=12, counters_total=20)
+        u12.put()
+        u13 = URICounter(key_name="13", count=13, counters_total=20)
+        u13.put()
+        u14 = URICounter(key_name="14", count=14, counters_total=20)
+        u14.put()
+        u15 = URICounter(key_name="15", count=15, counters_total=20)
+        u15.put()
+        u16 = URICounter(key_name="16", count=16, counters_total=20)
+        u16.put()
+        u17 = URICounter(key_name="17", count=17, counters_total=20)
+        u17.put()
+        u18 = URICounter(key_name="18", count=18, counters_total=20)
+        u18.put()
+        u19 = URICounter(key_name="19", count=19, counters_total=20)
+        u19.put()
+
+        # fuck yeah vim; i never need to learn how 2 loops.
+
+### THIS SHIT SHOULD BE PART OF SOME KIND OF INITIALIZATION PKG
+
+
 
 class AddTemplate(webapp.RequestHandler):
 
@@ -122,6 +177,8 @@ class AddTemplate(webapp.RequestHandler):
             self.redirect('/addTemplate?s=s')
         else:
             self.redirect('/addTemplate')
+
+
 
 class MemeGallery(webapp.RequestHandler):
 
@@ -144,6 +201,8 @@ def main():
         (r'/addMeme', LandingPortal),
         (r'/serve', ServeImage),
         (r'/addTemplate', AddTemplate),
+        #        (r'/initURICounters', InitURICounters), 
+        #        (r'/addCode', AddCode), # yeah...........
         (r'/procTemplate', AddTemplate)],
     debug=False)
     run_wsgi_app(application)
