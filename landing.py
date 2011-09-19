@@ -22,6 +22,10 @@ from meem_models import Template, get_all_templates, get_template_by_id,\
 class LandingPortal(webapp.RequestHandler):
 
     def get(self):
+        # disable caching for landing portal HTML (images still cached)
+        # maintains freshness when user uploads new template
+        self.response.headers['Cache-Control']="no-cache"
+
         template_uid = self.request.get('tuid')
         templates = get_all_templates()
         template_data = {
@@ -122,6 +126,9 @@ class AddTemplate(webapp.RequestHandler):
 class MemeGallery(webapp.RequestHandler):
 
     def get(self):
+        # disable caching for meme gallery HTML (images still cached)
+        self.response.headers['Cache-Control']="no-cache"
+
         memes = get_all_memes()
         logging.info(memes)
         template_values = { 'memes': memes }
