@@ -23,17 +23,17 @@ class Meme(db.Model):
     timestamp = db.DateTimeProperty(auto_now=True)
 
 
-# create_mem(str, str, str) [ the third string is the raw meme in base64 encoding]
+# create_meme(str, str, str) [ the third string is the raw meme in base64 encoding]
 def create_meme(top, bottom, meme, template_uid):
     """Create a meme object in the datastore"""
     m = Image(meme)
     thumb = Image(meme)
     width, height = m.width, m.height
-    
+
     if m.width != 500:
         m.resize(width=500)
         m = m.execute_transforms(output_encoding=JPEG)
-        
+
         moar_img_data = Image(m)
         width, height = moar_img_data.width, moar_img_data.height
 
@@ -89,8 +89,8 @@ def create_template(name, img):
     t_img = db.Blob(img)
     width, height = template_data.width, template_data.height
 
-    if width != 500:
-        template_data.resize(width=500)
+    if width != 548:
+        template_data.resize(width=548)
         template_data = template_data.execute_transforms()
         t_data = Image(template_data)
         width, height = t_data.width, t_data.height
@@ -146,7 +146,7 @@ def get_unique_code():
     counter_index = random.randint(0,19)
     counter = URICounter.get_by_key_name(str(counter_index))
     if not counter:
-        counter = URICounter(count=0)
+        counter = URICounter(count=counter_index)
         counter.save()
     c = counter.get_next()
     return c
