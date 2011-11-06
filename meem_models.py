@@ -128,7 +128,7 @@ class BetaTicket(db.Model):
 
 
 def code_is_valid(code):
-    return BetaTicket.all().filter('code =', code).get()
+    return True
  
 
 class URICounter(db.Model):
@@ -145,6 +145,9 @@ def get_unique_code():
     """Get a counter at random and return an unused code"""
     counter_index = random.randint(0,19)
     counter = URICounter.get_by_key_name(str(counter_index))
+    if not counter:
+        counter = URICounter(count=0)
+        counter.save()
     c = counter.get_next()
     return c
 
@@ -160,7 +163,6 @@ def enc_b62(num):
         ret.append(ALPHABET[rem])
     ret.reverse()
     return ''.join(ret)
-                                                  
 
 def get_meme_url():
     c = enc_b62(get_unique_code())

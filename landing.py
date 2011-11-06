@@ -26,8 +26,9 @@ class LandingPortal(webapp.RequestHandler):
         # maintains freshness when user uploads new template
         self.response.headers['Cache-Control']="no-cache"
 
-        template_uid = self.request.get('tuid')
+        template_uid = self.request.get('tuid') or '714783ff9d4c4248'
         templates = get_all_templates()
+
         template_data = {
             'templates': templates,
             'template_uid': template_uid

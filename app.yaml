@@ -1,4 +1,4 @@
-application: waterlol-prod
+application: zoidbergmemes
 version: 1
 runtime: python
 api_version: 1
