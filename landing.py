@@ -16,7 +16,7 @@ from google.appengine.api import memcache
 
 from meem_models import Template, URICounter, get_all_templates, get_template_by_id,\
     get_all_template_ids, create_template, create_meme, get_meme_by_id, code_is_valid,\
-    BetaTicket, get_all_memes
+    BetaTicket, get_all_memes, get_last_n_memes
 
 
 class LandingPortal(webapp.RequestHandler):
@@ -29,9 +29,26 @@ class LandingPortal(webapp.RequestHandler):
         template_uid = self.request.get('tuid') or '714783ff9d4c4248'
         templates = get_all_templates()
 
+        memes = get_last_n_memes(6)
+        meme_thumbs = ['/serve?t=m&s=t&id=%s' % m.uid for m in memes]
+        meme_urls = ['/serve?t=m&id=%s' % m.uid for m in memes]
+
         template_data = {
             'templates': templates,
-            'template_uid': template_uid
+            'template_uid': templates[0][0],
+            'thumb1': meme_thumbs[0],
+            'thumb2': meme_thumbs[1],
+            'thumb3': meme_thumbs[2],
+            'thumb4': meme_thumbs[3],
+            'thumb5': meme_thumbs[4],
+            'thumb6': meme_thumbs[5],
+
+            'full1': meme_urls[0],
+            'full2': meme_urls[1],
+            'full3': meme_urls[2],
+            'full4': meme_urls[3],
+            'full5': meme_urls[4],
+            'full6': meme_urls[5],
         }
         path = os.path.join(os.path.dirname(__file__), 'html/index.html')
         self.response.out.write(template.render(path, template_data))
@@ -57,9 +74,9 @@ class ShowMeme(webapp.RequestHandler):
             self.redirect('/')
             return
 
-        meme_relurl = 'serve?t=m&id='+meme_id;
-        meme_absurl = 'http://www.waterlol.com/serve?t=m&id=' + meme_id # temporary. make this dynamic before release
-        page_url = self.request.url;
+        meme_relurl = 'serve?t=m&id=' + meme_id
+        meme_absurl = 'http://zoidbergmemes.appspot.com/serve?t=m&id=' + meme_id # temporary. make this dynamic before release
+        page_url = self.request.url
 
         meme_data = {
             'meme_relurl': meme_relurl,
@@ -70,7 +87,7 @@ class ShowMeme(webapp.RequestHandler):
             'meme_img' : cgi.escape('<img src="' + meme_absurl + '" / >'),
             'template_uid': m.template_uid
         }
-        
+
         path = os.path.join(os.path.dirname(__file__), 'html/meme.html')
         self.response.out.write(template.render(path, meme_data))
 

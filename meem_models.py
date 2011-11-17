@@ -61,6 +61,13 @@ def create_meme(top, bottom, meme, template_uid):
 def get_meme_by_id(uid):
     return Meme.all().filter('uid =', uid).get()
 
+def get_last_n_memes(num=5):
+    memes = list(Meme.all().order('-timestamp')[:num])
+    if len(memes) < num:
+        for i in range(len(memes), num):
+            memes.append(memes[len(memes)-1])
+    return memes
+
 def get_all_memes():
     ms = []
     for m in Meme.all():
@@ -83,7 +90,7 @@ class Template(db.Model):
 def create_template(name, img):
     """Adds this template to the datastore along with a generated
        thumbnail and accompanied dimension metadata"""
-    
+
     thumb = Image(img)
     template_data = Image(img)
     t_img = db.Blob(img)
@@ -129,12 +136,11 @@ class BetaTicket(db.Model):
 
 def code_is_valid(code):
     return True
- 
 
 class URICounter(db.Model):
     count = db.IntegerProperty(indexed=True, required=True)
     counters_total = db.IntegerProperty(indexed=False,default=20)
-    
+
     def get_next(self):
         c = self.count
         self.count += self.counters_total
@@ -143,11 +149,15 @@ class URICounter(db.Model):
 
 def get_unique_code():
     """Get a counter at random and return an unused code"""
-    counter_index = random.randint(0,19)
-    counter = URICounter.get_by_key_name(str(counter_index))
-    if not counter:
+    counter_index = 1
+    counters = URICounter.all()
+    counter = None
+    if not counters.count():
         counter = URICounter(count=counter_index)
         counter.save()
+    else:
+        counter = counters[0]
+
     c = counter.get_next()
     return c
 

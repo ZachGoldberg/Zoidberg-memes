@@ -9,8 +9,6 @@
 }
 #bake {
     color: #000;
-/*    margin-left: 250px; */
-/*    margin-bottom: 10px; */
     background-color: transparent;
     border-color: #000000;
     border-width: 2px;
@@ -398,13 +396,10 @@ breakTextArray = function(ta, ctx) {
 
 </script>
 
-
-<!-- Google Analytics -->
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-25801059-1']);
-  _gaq.push(['_setDomainName', 'waterlol.com']);
+  _gaq.push(['_setAccount', 'UA-26862628-1']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -414,28 +409,51 @@ breakTextArray = function(ta, ctx) {
   })();
 
 </script>
+<script type="text/javascript">
 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26859464-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 
 <body id="body">
-
-    <div id="header">
-        <div id="header_contents">
-	  Why Not Zoidberg?
-        </div>
-    </div>
-
     <div id="c"> 
      <div class="lpanel" id="editor">
           <img id="staging_template" width="500" style="position: absolute;" {% if template_uid %} src="/serve?id={{template_uid}}&t=t" {% endif %}/>
           <canvas id="editor-canvas" width="500" height="382" style="position:relative; z-index: 100;"> </canvas>
           <form id="input" style="margin-top: 7px" enctype="multipart/form-data" method="post" onSubmit="return addMeme(this);" action="/addMeme">
-              <input type="submit" name="bake" id="bake" value="Create Image" style="float:right;" tabindex=3 />
+              <input type="submit" name="bake" id="bake" value="Create Meme" style="float:right;" tabindex=3 />
               <div class="textfield"><input class="memetext" type="text" style="margin-bottom: 1px" name="top" id="top" size="24" tabindex=1 /></div>
               <input type='hidden' id='tuid' name='tuid' />
               <div class="textfield"><input class="memetext" type="text" style="margin-top: 1px" name="bottom" id="bottom" size="24" tabindex=2 /></div>
           </form>
      </div> <!-- editor done --!>
+     <div>
+       <img src='http://zoidbergmemes.appspot.com/serve?t=m&id=e'>
+     </div>
+<div style="clear: both;"></div>
+<a href='{{full1}}'>
+   <img border=0 src='{{thumb1}}' width='164' height'125'></a>
+<a href='{{full2}}'>
+   <img border=0 src='{{thumb2}}' width='164' height'125'></a>
+<a href='{{full3}}'>
+   <img border=0 src='{{thumb3}}' width='164' height'125'></a>
+<a href='{{full4}}'>
+   <img border=0 src='{{thumb4}}' width='164' height'125'></a>
+<a href='{{full5}}'>
+   <img border=0 src='{{thumb5}}' width='164' height'125'></a>
+<a href='{{full6}}'>
+   <img border=0 src='{{thumb6}}' width='164' height'125'></a>
+
     </div>
-</body>
-</html>
+    </div>
+    </body>
+</html> 

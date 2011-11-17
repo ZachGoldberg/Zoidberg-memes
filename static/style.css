@@ -16,7 +16,6 @@ body {
 }
 
 #c {
-    height: 775px;
     width: 1150px;
     margin: 0 auto 0 auto;
 }
@@ -37,7 +36,6 @@ h3 {
 div.lpanel {
     margin: 0 12px 0 0;
     padding: 0;
-    height: 775px;
     width: 500px;
     float: left;
 }
@@ -45,7 +43,6 @@ div.lpanel {
 div.rpanel {
     margin-left: 5px;
     padding: 0;
-    height: 775px;
     float: left;
     width: 633px;
 }

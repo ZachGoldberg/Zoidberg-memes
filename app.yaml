@@ -21,5 +21,10 @@ handlers:
 - url: /initFix
   script: init.py
 
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  
+
 - url:  /.*
   script: landing.py 

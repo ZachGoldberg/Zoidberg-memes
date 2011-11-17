@@ -1,53 +1,55 @@
 <html>
     <head>
-        <title>WATERLOL | β</title>
+        <title>Why not zoidberg?</title>
         <link href="static/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
 
-        <!-- Google Analytics -->
-        <script type="text/javascript">
-        
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-25801059-1']);
-          _gaq.push(['_setDomainName', 'waterlol.com']);
-          _gaq.push(['_trackPageview']);
-        
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        
-        </script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26862628-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26859464-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
     </head>
 
     <body>
-        <div id="header">
-            <div id="header_contents">
-                <a href="/"><img src="static/waterlol_banner.png" /></a>
-            </div>
-        </div>
-
+ 
         <div id="c">
             <div class="lpanel">
                 <!-- put meme here --> 
                 <img src={{meme_relurl}}></img>
                 <div id="meme_meta">
-                    <p>By: {{meme_author}}</p>
-                    <p><a href="/?tuid={{template_uid}}">Create another meme with this template</a></p>
                 </div>
             </div>
 
             <div class="rpanel">
-                <h2>Share this meme with your friends!</h2> 
                 <h3>Link</h3>
-                <input class="shareurl" id="pagelink" type="text" readonly="readonly" size=45 value='{{page_url}}'>
+                <input class="shareurl" id="pagelink" type="text" readonly="readonly" size=85 value='{{page_url}}'>
                 <h3>Image link</h3>
-                <input class="shareurl" id="imglink" type="text" readonly="readonly" size=45 value='{{meme_absurl}}'>
+                <input class="shareurl" id="imglink" type="text" readonly="readonly" size=85 value='{{meme_absurl}}'>
                 <h3>HTML link</h3>
-                <input class="shareurl" id="htmlpagelink" type="text" readonly="readonly" size=45 value='{{page_href}}'>
+                <input class="shareurl" id="htmlpagelink" type="text" readonly="readonly" size=85 value='{{page_href}}'>
                 <h3>HTML image</h3>
-                <input class="shareurl" id="htmlimglink" type="text" readonly="readonly" size=45 value='{{meme_img}}'>
-                <p><br />TODO: Implement: Google+ share button, Facebook share button</p>
+                <input class="shareurl" id="htmlimglink" type="text" readonly="readonly" size=85 value='{{meme_img}}'>
+
             </div>
 
         </div>
